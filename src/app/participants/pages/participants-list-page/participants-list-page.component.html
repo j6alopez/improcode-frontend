@@ -57,9 +57,49 @@
 </div>
 <div class="row d-flex justify-content-lg-end justify-content-center">
   <div class="col-6 col-md-4 col-lg-2">
-    <button class="btn btn-primary w-100">
+    <button class="btn btn-primary w-100 mt-3" (click)="openModal()">
       <i class="bi bi-plus-lg"></i>
-      Add
-    </button>
+      Add </button>
   </div>
 </div>
+
+<dialog class="custmodal" id="modal" #dialogtest>
+  <h4 class="text-center">Add Participant</h4>
+  <hr class="bg-secondary">
+  <form autocomplete="off"
+    class="d-flex flex-column flex-md-row flex-md-wrap justify-content-center justify-content-sm-space">
+    <div class="mb-3 col-12 col-6-md">
+      <label for="fistname" class="form-label">Firstname</label>
+      <input type="text" class="form-control" id="fistname" placeholder="Jordi">
+    </div>
+
+    <div class="mb-3 col-12 col-6-md">
+      <label for="lastname" class="form-label">Lastname</label>
+      <input type="text" class="form-control" id="lastname" placeholder="López">
+    </div>
+
+    <div class="mb-3 col-12 col-6-md">
+      <label for="phone" class="form-label">Phone</label>
+      <input type="tel" class="form-control" id="phone" placeholder="612612612">
+    </div>
+
+    <div class="mb-3 col-12 col-6-md">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" placeholder="jordi@gmail.com">
+    </div>
+
+    <div class="mb-3 col-12">
+      <label for="distance" class="form-label">Distance</label>
+      <select name="distance" id="distance" class="form-select">
+        <option value="37km">37km</option>
+        <option value="54km">54km</option>
+      </select>
+    </div>
+
+    <button class="btn btn-primary flex-grow-1 flex-md-grow-0 mx-3 my-1 px-md-5">Save</button>
+    <button class="btn btn-danger flex-grow-1 flex-md-grow-0 mx-3 my-1 px-md-5" (click)="closeModal()">Cancel
+    </button>
+
+  </form>
+
+</dialog>
