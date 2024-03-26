@@ -1,20 +1,21 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ParticipantListComponent } from '../../components/participant-list/participant-list.component';
-import { Participant } from '../../interfaces/participant.interface';
-import { ParticipantsService } from '../../services/participants.service';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, inject, signal, Signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+
 import { Distance } from '../../interfaces/distance.enum';
+import { Participant } from '../../interfaces/participant.interface';
+import { ParticipantListComponent } from '../../components/participant-list/participant-list.component';
+import { ParticipantsService } from '../../services/participants.service';
 import { RemoveParticipantModalComponent } from '../../components/remove-participant-modal/remove-participant-modal.component';
 
 @Component({
   selector: 'participants-page',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
-    ParticipantListComponent,
     CommonModule,
-    RemoveParticipantModalComponent
+    ParticipantListComponent,
+    ReactiveFormsModule,
+    RemoveParticipantModalComponent,
   ],
   templateUrl: './participants-page.component.html',
   styleUrl: './participants-page.component.scss'
@@ -23,12 +24,10 @@ export class ParticipantsListPageComponent implements OnInit, AfterViewInit {
 
   private participantsService: ParticipantsService = inject(ParticipantsService);
 
-  @ViewChild('dialogtest')
-  dialog!: ElementRef<HTMLDialogElement>;
-  @ViewChild('removemodal')
-  dialog2!: RemoveParticipantModalComponent;
+  @ViewChild('createParticipant')
+  createDialog!: ElementRef<HTMLDialogElement>;
 
-  public participants: Participant[] = [];
+  public participants!: Signal<Participant[]>;
 
   public addParticipant: FormGroup = new FormGroup({
     firstname: new FormControl('', [
@@ -52,42 +51,38 @@ export class ParticipantsListPageComponent implements OnInit, AfterViewInit {
   })
 
   closeModal() {
-    this.dialog.nativeElement.close();
+    this.createDialog.nativeElement.close();
   }
 
   openModal() {
-    this.dialog.nativeElement.showModal();
+    this.createDialog.nativeElement.showModal();
   }
 
   openModalRemove() {
-    this.dialog.nativeElement.showModal();
+    this.createDialog.nativeElement.showModal();
   }
 
   ngOnInit(): void {
-    this.participantsService.getParticipants()
-      .subscribe(participants => {
-        console.log(participants);
-        this.participants = participants
-      });
+    this.participants = computed(() => {
+      return this.participantsService.participants();
+    });
   }
 
   ngAfterViewInit() {
-    this.dialog.nativeElement.addEventListener('click', (event: MouseEvent) => {
+    this.createDialog.nativeElement.addEventListener('click', (event: MouseEvent) => {
       event.preventDefault();
-      const target = event.target as Element;
     });
   }
 
   onSubmit(): void {
     if (this.addParticipant.invalid) {
       this.addParticipant.markAllAsTouched();
-      console.log('nop');
       return;
     }
     const participant: Participant = this.addParticipant.value;
-    this.participantsService.createParticipant(participant).subscribe( participant => {
-      this.participants.push(participant);
+    this.participantsService.createParticipant(participant).subscribe(participant => {
       this.closeModal();
+      this.participantsService.addParticipant(participant);
     })
   }
 

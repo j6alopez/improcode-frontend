@@ -1,4 +1,4 @@
-<participants-list [participants]="participants"></participants-list>
+<participants-list  [participants]="participants()"></participants-list>
 <div class="row d-flex justify-content-lg-end justify-content-center">
   <div class="col-6 col-md-4 col-lg-2">
     <button class="btn btn-primary w-100 mt-3" (click)="openModal()">
@@ -7,7 +7,7 @@
   </div>
 </div>
 
-<dialog class="custmodal" id="modal" #dialogtest>
+<dialog class="custmodal" id="modal" #createParticipant>
   <h4 class="text-center">Add Participant</h4>
   <hr class="bg-secondary">
   <form [formGroup]="addParticipant" (ngSubmit)="onSubmit()" autocomplete="off"
@@ -84,8 +84,3 @@
   </form>
 </dialog>
 
-<button
-(click)="dialog2.openDialog()"
->test remove</button>
-
-<remove-participant-modal #removemodal></remove-participant-modal>
