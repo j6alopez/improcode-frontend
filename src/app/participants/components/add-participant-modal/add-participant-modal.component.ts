@@ -14,15 +14,15 @@ export class AddParticipantModalComponent implements Modal {
   }
 
   open(): void {
-    throw new Error('Method not implemented.');
+    this.elementRef.nativeElement.showModal();
   }
   close(): void {
     throw new Error('Method not implemented.');
   }
-  onSave(): void {
+  openDialog(): void {
     throw new Error('Method not implemented.');
   }
-  onCancel(): void {
+  closeDialog(): void {
     throw new Error('Method not implemented.');
   }
 }

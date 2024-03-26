@@ -5,6 +5,7 @@ import { Participant } from '../../interfaces/participant.interface';
 import { ParticipantsService } from '../../services/participants.service';
 import { CommonModule } from '@angular/common';
 import { Distance } from '../../interfaces/distance.enum';
+import { RemoveParticipantModalComponent } from '../../components/remove-participant-modal/remove-participant-modal.component';
 
 @Component({
   selector: 'participants-page',
@@ -12,7 +13,8 @@ import { Distance } from '../../interfaces/distance.enum';
   imports: [
     ReactiveFormsModule,
     ParticipantListComponent,
-    CommonModule
+    CommonModule,
+    RemoveParticipantModalComponent
   ],
   templateUrl: './participants-page.component.html',
   styleUrl: './participants-page.component.scss'
@@ -23,6 +25,8 @@ export class ParticipantsListPageComponent implements OnInit, AfterViewInit {
 
   @ViewChild('dialogtest')
   dialog!: ElementRef<HTMLDialogElement>;
+  @ViewChild('removemodal')
+  dialog2!: RemoveParticipantModalComponent;
 
   public participants: Participant[] = [];
 
@@ -53,7 +57,10 @@ export class ParticipantsListPageComponent implements OnInit, AfterViewInit {
 
   openModal() {
     this.dialog.nativeElement.showModal();
+  }
 
+  openModalRemove() {
+    this.dialog.nativeElement.showModal();
   }
 
   ngOnInit(): void {
