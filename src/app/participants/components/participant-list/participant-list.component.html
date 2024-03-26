@@ -1,0 +1,41 @@
+<div class="overflow-x-auto">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Location</th>
+        <th scope="col">Distance</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (participant of participants; track $index) {
+        <tr>
+          <th scope="row">{{$index + 1}}</th>
+          <td class="align-content-center">{{ participant.firstname}}</td>
+          <td>{{ participant.lastname}}</td>
+          <td>{{ participant.email}}</td>
+          <td>{{ participant.phone}}</td>
+          <td>{{ participant.location}}</td>
+          <td>{{ participant.distance}}</td>
+          <td class="d-flex gap-2">
+            <button class="btn btn-warning rounded-4" type="button">
+              <span>
+                <i class="bi bi-pencil"></i>
+              </span>
+            </button>
+            <button class="btn btn-danger">
+              <span>
+                <i class="bi bi-trash3"></i>
+              </span>
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

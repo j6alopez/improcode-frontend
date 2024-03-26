@@ -6,8 +6,6 @@ export interface Participant {
 
   lastname: string;
 
-  password: string;
-
   email: string;
 
   phone: string;
@@ -17,3 +15,4 @@ export interface Participant {
   distance: string;
 
 }
+

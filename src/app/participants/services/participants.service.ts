@@ -15,27 +15,27 @@ export class ParticipantsService {
   constructor() { }
 
   getParticipants(): Observable<Participant[]> {
-    const url = `${this.baseUrl}/users`
+    const url = `${this.baseUrl}/participants`
     return this.http.get<Participant[]>(url);
   }
 
   getParticipant(id: string): Observable<Participant> {
-    const url = `${this.baseUrl}/users/$id`
+    const url = `${this.baseUrl}/participants/$id`
     return this.http.get<Participant>(url);
   }
 
   createParticipant(participant: Participant): Observable<Participant> {
-    const url = `${this.baseUrl}/users`
+    const url = `${this.baseUrl}/participants`
     return this.http.post<Participant>(url, participant);
   }
 
   updateParticipant(id: string, participant: Participant): Observable<Participant> {
-    const url = `${this.baseUrl}/users/$id`
+    const url = `${this.baseUrl}/participants/$id`
     return this.http.patch<Participant>(url, participant);
   }
 
   deleteParticipant(id: string): Observable<Participant> {
-    const url = `${this.baseUrl}/users/$id`
+    const url = `${this.baseUrl}/participants/$id`
     return this.http.delete<Participant>(url);
   }
 

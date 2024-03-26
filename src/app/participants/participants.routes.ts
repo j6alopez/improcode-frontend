@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { LayoutPageComponent } from './pages/layout-page/layout-page.component';
-import { ParticipantsListPageComponent } from './pages/participants-list-page/participants-list-page.component';
+import { ParticipantsListPageComponent } from './pages/participants-page/participants-page.component';
 import { ParticipantPageComponent } from './pages/participant-page/participant-page.component';
 
 export const PARTICIPANTS_ROUTES: Routes = [
