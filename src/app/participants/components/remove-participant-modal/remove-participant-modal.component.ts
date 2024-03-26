@@ -1,6 +1,5 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild, inject } from '@angular/core';
 import { Participant } from '../../interfaces/participant.interface';
-import { ParticipantsListPageComponent } from '../../pages/participants-page/participants-page.component';
 import { ParticipantsService } from '../../services/participants.service';
 
 @Component({

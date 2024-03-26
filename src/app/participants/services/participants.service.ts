@@ -51,6 +51,12 @@ export class ParticipantsService implements OnInit {
     this.participantsSignal.update(participants => [...participants, participant]);
   }
 
+  updatesParticipant(participant: Participant): void {
+    this.participantsSignal.update( participants =>
+      participants.filter( element => element._id === participant._id)
+      .map( () => participant ));
+  }
+
   removeParticipant(participant: Participant): void {
     if ( !participant._id ) return;
     this.deleteParticipant(participant._id).subscribe(
@@ -61,12 +67,9 @@ export class ParticipantsService implements OnInit {
     )
   }
 
-
   ngOnInit(): void {
-    console.log('oniint')
     this.getParticipants()
       .subscribe(participants => {
-        console.log(participants)
         this.participantsSignal.set(participants);
       })
   }
