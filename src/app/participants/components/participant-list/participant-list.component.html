@@ -23,13 +23,15 @@
           <td>{{ participant.location}}</td>
           <td>{{ participant.distance}}</td>
           <td class="d-flex gap-2">
-            <button class="btn btn-warning rounded-4" type="button">
+            <button class="btn btn-warning rounded-4" type="button"
+            (click)="editClicked($index)"
+            >
               <span>
                 <i class="bi bi-pencil"></i>
               </span>
             </button>
             <button class="btn btn-danger"
-              (click)="removeParticipant.openDialog()"
+            (click)="removeClicked($index)"
             >
               <span>
                 <i class="bi bi-trash3"></i>
@@ -37,7 +39,6 @@
             </button>
           </td>
         </tr>
-        <remove-participant-modal  [participant]="participant" #removeParticipant></remove-participant-modal>
       }
     </tbody>
   </table>

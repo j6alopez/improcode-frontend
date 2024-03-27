@@ -1,23 +1,24 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, inject, signal, Signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild, inject, Signal, computed } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
-import { Distance } from '../../interfaces/distance.enum';
+import { AddParticipantModalComponent } from '../../components/add-participant-modal/add-participant-modal.component';
 import { Participant } from '../../interfaces/participant.interface';
 import { ParticipantListComponent } from '../../components/participant-list/participant-list.component';
 import { ParticipantsService } from '../../services/participants.service';
-import { RemoveParticipantModalComponent } from '../../components/remove-participant-modal/remove-participant-modal.component';
-import { AddParticipantModalComponent } from '../../components/add-participant-modal/add-participant-modal.component';
+import { DeleteParticipantModalComponent as DeleteParticipantModalComponent } from '../../components/delete-participant-modal/delete-participant-modal.component';
+import { EditParticipantModalComponent } from '../../components/edit-participant-modal/edit-participant-modal.component';
 
 @Component({
   selector: 'participants-page',
   standalone: true,
   imports: [
     CommonModule,
-    AddParticipantModalComponent,
-    ParticipantListComponent,
     ReactiveFormsModule,
-    RemoveParticipantModalComponent,
+    AddParticipantModalComponent,
+    DeleteParticipantModalComponent,
+    EditParticipantModalComponent,
+    ParticipantListComponent,
   ],
   templateUrl: './participants-page.component.html',
   styleUrl: './participants-page.component.scss'
@@ -28,6 +29,13 @@ export class ParticipantsListPageComponent implements OnInit {
 
   @ViewChild('createParticipant')
   createDialog!: AddParticipantModalComponent;
+
+  @ViewChild('editParticipant')
+  editDialog!: EditParticipantModalComponent;
+
+  @ViewChild('deleteParticipant')
+  deleteDialog!: DeleteParticipantModalComponent;
+
 
   public participants!: Signal<Participant[]>;
 

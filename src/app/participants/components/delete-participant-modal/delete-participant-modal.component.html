@@ -1,7 +1,9 @@
 <dialog class="custmodal" id="modal" #dialog>
   <h4 class="text-center">Delete Participant</h4>
   <hr class="bg-secondary">
-  <p> Do you want to delete participant with email: {{participant.email}}?</p>
+  @if ( participant ) {
+    <p> Do you want to delete participant with email: {{participant.email}}?</p>
+  }
   <div class="justify-content-lg-end">
     <button type="submit" class="btn btn-primary flex-grow-1 flex-md-grow-0 mx-3 my-1 px-md-5" (click)="onConfirm()">
       Confirm

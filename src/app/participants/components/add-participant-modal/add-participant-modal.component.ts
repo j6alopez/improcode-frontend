@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, ViewChild, inject } from '@angular/core';
 import { Modal } from '../../../shared/modals/interfaces/modal.interface';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Distance } from '../../interfaces/distance.enum';
+import { Distance } from '../enums/distance.enum';
 import { ParticipantsService } from '../../services/participants.service';
 import { Participant } from '../../interfaces/participant.interface';
 
@@ -59,7 +59,7 @@ export class AddParticipantModalComponent implements Modal {
   }
 
   onConfirm() {
-    this.participantsService.updatesParticipant(this.participant)
+    this.participantsService.createParticipant(this.participant)
     this.closeDialog();
   }
 
@@ -71,7 +71,6 @@ export class AddParticipantModalComponent implements Modal {
     const participant: Participant = this.addParticipant.value;
     this.participantsService.createParticipant(participant).subscribe(participant => {
       this.closeDialog();
-      this.participantsService.addParticipant(participant);
     })
   }
 

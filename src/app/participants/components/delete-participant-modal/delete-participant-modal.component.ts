@@ -3,15 +3,15 @@ import { Participant } from '../../interfaces/participant.interface';
 import { ParticipantsService } from '../../services/participants.service';
 
 @Component({
-  selector: 'remove-participant-modal',
+  selector: 'delete-participant-modal',
   standalone: true,
   imports: [],
-  templateUrl: './remove-participant-modal.component.html',
-  styleUrl: './remove-participant-modal.component.scss'
+  templateUrl: './delete-participant-modal.component.html',
+  styleUrl: './delete-participant-modal.component.scss'
 })
-export class RemoveParticipantModalComponent {
+export class DeleteParticipantModalComponent {
 
-  private ParticipantsService = inject(ParticipantsService);
+  private participantsService = inject(ParticipantsService);
 
   @Input( )
   participant!: Participant
@@ -19,9 +19,11 @@ export class RemoveParticipantModalComponent {
   @ViewChild('dialog')
   dialog!: ElementRef<HTMLDialogElement>;
 
-  openDialog(): void {
+  openDialog( participant: Participant): void {
+    this.participant = participant;
     this.dialog.nativeElement.showModal();
   }
+
   closeDialog(): void {
     this.dialog.nativeElement.close();
   }
@@ -31,7 +33,9 @@ export class RemoveParticipantModalComponent {
   }
 
   onConfirm() {
-    this.ParticipantsService.removeParticipant(this.participant)
+    const {_id } = this.participant;
+    if( !_id) return;
+    this.participantsService.deleteParticipant(_id).subscribe();
     this.closeDialog();
   }
 
