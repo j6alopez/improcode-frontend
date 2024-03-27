@@ -3,6 +3,7 @@ import { LngLat, Map, Marker } from 'mapbox-gl';
 import { MarkerAndColor } from '../../interfaces/marker-and-color.interface'
 import { MapLocationService } from '../../services/map-location.service';
 import { CommonModule } from '@angular/common';
+import { MapLocation } from '../../interfaces/map-location.interface';
 
 @Component({
   selector: 'races-race-page',
@@ -15,7 +16,7 @@ import { CommonModule } from '@angular/common';
 })
 export class RacePageComponent {
 
-  private service = inject(MapLocationService);
+  private mapLocationService = inject(MapLocationService);
 
   @ViewChild('map')
   public divMap?: ElementRef;
@@ -61,17 +62,46 @@ export class RacePageComponent {
     .setLngLat(lngLat)
     .addTo(this.map);
 
-    this.markers.push( { marker, color } );
-    // this.saveToLocalStorage();
+    const location: MapLocation = {
+      ...lngLat,
+      zoom: this.map.getZoom()
+    }
+
+    this.mapLocationService.createLocation(location)
+    .subscribe( (location) => {
+        this.markers.push( { location, marker, color } );
+      }
+    );
 
     marker.on('dragend', () => {
-      // this.saveToLocalStorage();
+      const markerOnList: MarkerAndColor | undefined = this.markers.find( element => element.marker === marker);
+      if( !markerOnList) {
+        return;
+      }
+
+      const { location: { _id }, marker: currentMarker  } = markerOnList;
+      if(!_id) {
+        return;
+      }
+
+      const { lng , lat } = currentMarker.getLngLat();
+      const updateLocation : MapLocation = {
+        _id, zoom: this.map!.getZoom(), lng, lat,
+      }
+
+      this.mapLocationService.updateLocation(updateLocation).subscribe();
     })
   }
 
   deleteMarker(index: number) {
-    this.markers[index].marker.remove();
-    this.markers.splice( index, 1);
+    const { location: {_id } } = this.markers[index];
+    if( !_id ) return;
+    this.mapLocationService.deleteLocation(_id).subscribe(
+      () => {
+        this.markers[index].marker.remove();
+        this.markers.splice( index, 1);
+      }
+    );
   }
 
   flyTo( marker: Marker) {

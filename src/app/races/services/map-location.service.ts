@@ -33,6 +33,20 @@ export class MapLocationService implements OnInit {
     );
   }
 
+  updateLocation(location: MapLocation): Observable<MapLocation> {
+    const { _id, ...updateLocation } = location;
+    console.log(location)
+    const url = `${this.baseUrl}/map-locations/${_id}`
+    return this.http.patch<MapLocation>(url, updateLocation).pipe(
+      tap(participant => {
+        this.locationsSignal.update(locations =>
+          locations.map(element =>
+            element._id === location._id ? location : element)
+        );
+      }),
+    );
+  }
+
   deleteLocation(id: string): Observable<MapLocation> {
     const url = `${this.baseUrl}/map-locations/${id}`
     return this.http.delete<MapLocation>(url)
