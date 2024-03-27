@@ -12,6 +12,10 @@ export const routes: Routes = [
     loadChildren: () => import ('./participants/participants.routes').then( r => r.PARTICIPANTS_ROUTES)
   },
   {
+    path: 'races',
+    loadChildren: () => import ('./races/races.routes').then( r=> r.RACES_ROUTES)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',

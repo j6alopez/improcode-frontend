@@ -11,12 +11,12 @@ export class ParticipantsService implements OnInit {
 
   private http = inject(HttpClient);
   private baseUrl = environment.backend_base_url;
+  private participantsSignal = signal<Participant[]>([]);
 
   constructor() {
     this.ngOnInit();
   }
 
-  private participantsSignal = signal<Participant[]>([]);
 
   getParticipants(): Observable<Participant[]> {
     const url = `${this.baseUrl}/participants`
@@ -24,7 +24,7 @@ export class ParticipantsService implements OnInit {
   }
 
   getParticipant(id: string): Observable<Participant> {
-    const url = `${this.baseUrl}/participants/$id`
+    const url = `${this.baseUrl}/participants/${id}`
     return this.http.get<Participant>(url);
   }
 
@@ -39,22 +39,17 @@ export class ParticipantsService implements OnInit {
     );
   }
 
-  updateParticipant( participant: Participant): Observable<Participant> {
-    const {_id, ...updateParticipant } = participant;
+  updateParticipant(participant: Participant): Observable<Participant> {
+    const { _id, ...updateParticipant } = participant;
     const url = `${this.baseUrl}/participants/${_id}`
-    console.log(updateParticipant, url)
     return this.http.patch<Participant>(url, updateParticipant).pipe(
-      tap( participant => {
-        this.participantsSignal.update( participants =>
-          participants.map( element =>
-            element._id === participant._id ? participant : element )
-          );
+      tap(participant => {
+        this.participantsSignal.update(participants =>
+          participants.map(element =>
+            element._id === participant._id ? participant : element)
+        );
       }),
-      tap( () => {
-        console.log(updateParticipant);
-      })
-
-  );
+    );
   }
 
   deleteParticipant(id: string): Observable<Participant> {
