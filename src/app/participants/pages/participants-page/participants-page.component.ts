@@ -9,7 +9,7 @@ import { ParticipantsService } from '../../participants.service';
 import { DeleteParticipantModalComponent as DeleteParticipantModalComponent } from '../../components/delete-participant-modal/delete-participant-modal.component';
 import { EditParticipantModalComponent } from '../../components/edit-participant-modal/edit-participant-modal.component';
 
-@Component({
+@Component( {
   selector: 'participants-page',
   standalone: true,
   imports: [
@@ -22,26 +22,26 @@ import { EditParticipantModalComponent } from '../../components/edit-participant
   ],
   templateUrl: './participants-page.component.html',
   styleUrl: './participants-page.component.scss'
-})
+} )
 export class ParticipantsListPageComponent implements OnInit {
 
-  private participantsService: ParticipantsService = inject(ParticipantsService);
+  private participantsService: ParticipantsService = inject( ParticipantsService );
 
-  @ViewChild('createParticipant')
+  @ViewChild( 'createParticipant' )
   createDialog!: AddParticipantModalComponent;
 
-  @ViewChild('editParticipant')
+  @ViewChild( 'editParticipant' )
   editDialog!: EditParticipantModalComponent;
 
-  @ViewChild('deleteParticipant')
+  @ViewChild( 'deleteParticipant' )
   deleteDialog!: DeleteParticipantModalComponent;
 
 
   public participants!: Signal<Participant[]>;
 
   ngOnInit(): void {
-    this.participants = computed(() => {
+    this.participants = computed( () => {
       return this.participantsService.participants();
-    });
+    } );
   }
 }

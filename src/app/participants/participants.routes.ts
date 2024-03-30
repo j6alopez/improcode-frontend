@@ -7,8 +7,8 @@ export const PARTICIPANTS_ROUTES: Routes = [
     path: '',
     component: LayoutPageComponent,
     children: [
-          { path: '', component: ParticipantsListPageComponent },
-          { path: '**', redirectTo: 'home' },
-      ],
+      { path: '', component: ParticipantsListPageComponent },
+      { path: '**', redirectTo: 'home' },
+    ],
   },
 ];

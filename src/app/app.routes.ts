@@ -9,11 +9,11 @@ export const routes: Routes = [
   },
   {
     path: 'participants',
-    loadChildren: () => import ('./participants/participants.routes').then( r => r.PARTICIPANTS_ROUTES)
+    loadChildren: () => import( './participants/participants.routes' ).then( r => r.PARTICIPANTS_ROUTES )
   },
   {
     path: 'races',
-    loadChildren: () => import ('./races/races.routes').then( r=> r.RACES_ROUTES)
+    loadChildren: () => import( './races/races.routes' ).then( r => r.RACES_ROUTES )
   },
   {
     path: '',

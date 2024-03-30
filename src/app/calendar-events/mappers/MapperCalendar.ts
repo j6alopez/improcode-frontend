@@ -2,7 +2,7 @@ import { EventInput } from "@fullcalendar/core";
 import { CalendarEvent } from "../../shared/events/calendar.event.interface";
 
 export class MapperCalendar {
-  
+
   public static ToMulitpleEventInputs( events: CalendarEvent[] ): EventInput[] {
     return events.map( event => this.ToSingleEventInput( event ) );
   }

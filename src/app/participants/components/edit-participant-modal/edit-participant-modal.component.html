@@ -5,60 +5,36 @@
     class="d-flex flex-column flex-md-row flex-md-wrap justify-content-center justify-content-sm-space">
     <div class="mb-3 col-12 col-6-md">
       <label for="fistname" class="form-label">Firstname</label>
-      <input type="text"
-        formControlName = 'firstname'
-        class="form-control"
-        id="fistname"
-        placeholder="Jordi">
+      <input type="text" formControlName='firstname' class="form-control" id="fistname" placeholder="Jordi">
     </div>
 
     <div class="mb-3 col-12 col-6-md">
       <label for="lastname" class="form-label">Lastname</label>
-      <input type="text"
-        formControlName ='lastname'
-        class="form-control"
-        id="lastname"
-        placeholder="López">
+      <input type="text" formControlName='lastname' class="form-control" id="lastname" placeholder="López">
     </div>
 
     <div class="mb-3 col-12 col-6-md">
       <label for="phone" class="form-label">Phone</label>
-      <input type="tel"
-        formControlName ='phone'
-        class="form-control"
-        id="phone"
-        placeholder="612612612">
+      <input type="tel" formControlName='phone' class="form-control" id="phone" placeholder="612612612">
     </div>
 
     <div class="mb-3 col-12 col-6-md">
       <label for="location" class="form-label">Location</label>
-      <input type="text"
-        formControlName ='location'
-        class="form-control"
-        id="location"
-        placeholder="Barcelona">
+      <input type="text" formControlName='location' class="form-control" id="location" placeholder="Barcelona">
     </div>
 
     <div class="mb-3 col-12">
       <label for="distance" class="form-label">Distance</label>
-      <select name="distance"
-        formControlName ='distance'
-        id="distance"
-        class="form-select">
-        <option value="37km" selected >37km</option>
+      <select name="distance" formControlName='distance' id="distance" class="form-select">
+        <option value="37km" selected>37km</option>
         <option value="54km">54km</option>
       </select>
     </div>
     <div class="justify-content-lg-end">
-      <button type="submit"
-        class="btn btn-primary flex-grow-1 flex-md-grow-0 mx-3 my-1 px-md-5"
-      >
+      <button type="submit" class="btn btn-primary flex-grow-1 flex-md-grow-0 mx-3 my-1 px-md-5">
         Confirm
       </button>
-      <button
-        class="btn btn-danger flex-grow-1 flex-md-grow-0 mx-3 my-1 px-md-5"
-        (click)="closeDialog()"
-      > Cancel
+      <button class="btn btn-danger flex-grow-1 flex-md-grow-0 mx-3 my-1 px-md-5" (click)="closeDialog()"> Cancel
       </button>
     </div>
   </form>

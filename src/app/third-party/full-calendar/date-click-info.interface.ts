@@ -1,10 +1,10 @@
 export interface DateClickInfo {
-  date:    string;
+  date: string;
   dateStr: string;
-  allDay:  boolean;
-  dayEl:   DayEl;
+  allDay: boolean;
+  dayEl: DayEl;
   jsEvent: JSEvent;
-  view:    View;
+  view: View;
 }
 
 export interface DayEl {
@@ -15,44 +15,44 @@ export interface JSEvent {
 }
 
 export interface View {
-  type:    string;
+  type: string;
   dateEnv: DateEnv;
 }
 
 export interface DateEnv {
-  timeZone:         string;
+  timeZone: string;
   canComputeOffset: boolean;
-  calendarSystem:   DayEl;
-  locale:           Locale;
-  weekDow:          number;
-  weekDoy:          number;
-  weekText:         string;
-  weekTextLong:     string;
-  cmdFormatter:     null;
+  calendarSystem: DayEl;
+  locale: Locale;
+  weekDow: number;
+  weekDoy: number;
+  weekText: string;
+  weekTextLong: string;
+  cmdFormatter: null;
   defaultSeparator: string;
 }
 
 export interface Locale {
   codeArg: string;
-  codes:   string[];
-  week:    Week;
+  codes: string[];
+  week: Week;
   options: Options;
 }
 
 export interface Options {
-  direction:    string;
-  buttonText:   ButtonText;
-  weekText:     string;
+  direction: string;
+  buttonText: ButtonText;
+  weekText: string;
   weekTextLong: string;
-  closeHint:    string;
-  timeHint:     string;
-  eventHint:    string;
-  allDayText:   string;
+  closeHint: string;
+  timeHint: string;
+  eventHint: string;
+  allDayText: string;
   moreLinkText: string;
   noEventsText: string;
-  buttonHints:  ButtonHints;
-  viewHint:     string;
-  navLinkHint:  string;
+  buttonHints: ButtonHints;
+  viewHint: string;
+  navLinkHint: string;
 }
 
 export interface ButtonHints {
@@ -61,16 +61,16 @@ export interface ButtonHints {
 }
 
 export interface ButtonText {
-  prev:     string;
-  next:     string;
+  prev: string;
+  next: string;
   prevYear: string;
   nextYear: string;
-  year:     string;
-  today:    string;
-  month:    string;
-  week:     string;
-  day:      string;
-  list:     string;
+  year: string;
+  today: string;
+  month: string;
+  week: string;
+  day: string;
+  list: string;
 }
 
 export interface Week {

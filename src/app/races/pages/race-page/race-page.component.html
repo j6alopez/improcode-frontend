@@ -3,14 +3,8 @@
 <div class="floating-range p-2">
   <div class="floating-content">
     <button class="btn btn-primary" (click)="zoomOut()">-</button>
-    <input type="range"
-      class="form-range"
-      min="-2"
-      max="18"
-      [value]="zoom"
-      (input) = "zoomChanged(zoomInput.value)"
-      #zoomInput
-    >
+    <input type="range" class="form-range" min="-2" max="18" [value]="zoom" (input)="zoomChanged(zoomInput.value)"
+      #zoomInput>
     <button class="btn btn-primary" (click)="zoomIn()">+</button>
 
   </div>
@@ -24,18 +18,13 @@
 
 <ul class="list-group">
   @for ( colorMarker of markers; track $index;) {
-    <li class="list-group-item"
-    [ngStyle] = "{backgroundColor : colorMarker.color}"
-    (click)="flyTo(colorMarker.marker)"
-    (dblclick)="deleteMarker($index)"
-    >
-      Marker {{ $index + 1 }}
-    </li>
+  <li class="list-group-item" [ngStyle]="{backgroundColor : colorMarker.color}" (click)="flyTo(colorMarker.marker)"
+    (dblclick)="deleteMarker($index)">
+    Marker {{ $index + 1 }}
+  </li>
   }
 </ul>
 
-<button class="btn btn-primary" id="createMarker"
-  (click)="createMarker()"
->
+<button class="btn btn-primary" id="createMarker" (click)="createMarker()">
   + Add marker
 </button>

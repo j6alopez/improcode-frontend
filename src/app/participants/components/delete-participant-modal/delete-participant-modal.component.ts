@@ -2,24 +2,24 @@ import { Component, ElementRef, Input, ViewChild, inject } from '@angular/core';
 import { Participant } from '../../interfaces/participant.interface';
 import { ParticipantsService } from '../../participants.service';
 
-@Component({
+@Component( {
   selector: 'delete-participant-modal',
   standalone: true,
   imports: [],
   templateUrl: './delete-participant-modal.component.html',
   styleUrl: './delete-participant-modal.component.scss'
-})
+} )
 export class DeleteParticipantModalComponent {
 
-  private participantsService = inject(ParticipantsService);
+  private participantsService = inject( ParticipantsService );
 
-  @Input( )
+  @Input()
   participant!: Participant
 
-  @ViewChild('dialog')
+  @ViewChild( 'dialog' )
   dialog!: ElementRef<HTMLDialogElement>;
 
-  openDialog( participant: Participant): void {
+  openDialog( participant: Participant ): void {
     this.participant = participant;
     this.dialog.nativeElement.showModal();
   }
@@ -33,9 +33,9 @@ export class DeleteParticipantModalComponent {
   }
 
   onConfirm() {
-    const {_id } = this.participant;
-    if( !_id) return;
-    this.participantsService.deleteParticipant(_id).subscribe();
+    const { _id } = this.participant;
+    if ( !_id ) return;
+    this.participantsService.deleteParticipant( _id ).subscribe();
     this.closeDialog();
   }
 

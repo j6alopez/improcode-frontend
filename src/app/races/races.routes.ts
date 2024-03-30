@@ -7,8 +7,8 @@ export const RACES_ROUTES: Routes = [
     path: '',
     component: LayoutPageComponent,
     children: [
-          { path: '', component: RacePageComponent },
-          { path: '**', redirectTo: 'home' },
-      ],
+      { path: '', component: RacePageComponent },
+      { path: '**', redirectTo: 'home' },
+    ],
   },
 ];

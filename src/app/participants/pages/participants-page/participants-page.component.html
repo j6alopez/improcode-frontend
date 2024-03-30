@@ -1,8 +1,5 @@
-<participants-list
-  [participants]="participants()"
-  (onEditClicked)="editDialog.openDialog($event)"
-  (onRemoveClicked)="deleteDialog.openDialog($event)"
-  ></participants-list>
+<participants-list [participants]="participants()" (onEditClicked)="editDialog.openDialog($event)"
+  (onRemoveClicked)="deleteDialog.openDialog($event)"></participants-list>
 <div class="row d-flex justify-content-lg-end justify-content-center">
   <div class="col-6 col-md-4 col-lg-2">
     <button class="btn btn-primary w-100 mt-3" (click)="createDialog.openDialog()">

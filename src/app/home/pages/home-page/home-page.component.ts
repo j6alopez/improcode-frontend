@@ -1,17 +1,17 @@
-import { AfterViewInit, Component, ViewChild, inject, OnInit, Signal, computed } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Signal, ViewChild, computed, inject } from '@angular/core';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
-import { Calendar, CalendarOptions, EventClickArg, EventInput } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
+import { CalendarOptions, EventClickArg, EventInput } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { AddEventComponent } from '../../../calendar-events/components/add-event/add-event.component';
-import { Observable, filter, map, of, switchMap, tap, concatMap } from 'rxjs';
-import { CalendarEvent } from '../../../shared/events/calendar.event.interface';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import { Observable, concatMap, filter, of } from 'rxjs';
 import { CalendarEventsService } from '../../../calendar-events/calendar-events.service';
-import { DateClickInfo } from '../../../third-party/full-calendar/date-click-info.interface';
-import { MapperCalendar } from '../../../calendar-events/mappers/MapperCalendar';
+import { AddEventComponent } from '../../../calendar-events/components/add-event/add-event.component';
 import { DeleteEventComponent } from '../../../calendar-events/components/delete-event/delete-event.component';
+import { MapperCalendar } from '../../../calendar-events/mappers/MapperCalendar';
+import { CalendarEvent } from '../../../shared/events/calendar.event.interface';
+import { DateClickInfo } from '../../../third-party/full-calendar/date-click-info.interface';
 
 @Component( {
   selector: 'home-page',

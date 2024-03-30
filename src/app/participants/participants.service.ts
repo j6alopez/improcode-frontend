@@ -4,14 +4,14 @@ import { Participant } from './interfaces/participant.interface';
 import { environment } from '../../environments/environment';
 import { Observable, tap } from 'rxjs';
 
-@Injectable({
+@Injectable( {
   providedIn: 'root'
-})
+} )
 export class ParticipantsService implements OnInit {
 
-  private http = inject(HttpClient);
+  private http = inject( HttpClient );
   private baseUrl = environment.backend_base_url;
-  private participantsSignal = signal<Participant[]>([]);
+  private participantsSignal = signal<Participant[]>( [] );
 
   constructor() {
     this.ngOnInit();
@@ -19,49 +19,49 @@ export class ParticipantsService implements OnInit {
 
 
   getParticipants(): Observable<Participant[]> {
-    const url = `${this.baseUrl}/participants`
-    return this.http.get<Participant[]>(url);
+    const url = `${ this.baseUrl }/participants`
+    return this.http.get<Participant[]>( url );
   }
 
-  getParticipant(id: string): Observable<Participant> {
-    const url = `${this.baseUrl}/participants/${id}`
-    return this.http.get<Participant>(url);
+  getParticipant( id: string ): Observable<Participant> {
+    const url = `${ this.baseUrl }/participants/${ id }`
+    return this.http.get<Participant>( url );
   }
 
-  createParticipant(participant: Participant): Observable<Participant> {
-    const url = `${this.baseUrl}/participants`
-    return this.http.post<Participant>(url, participant)
-    .pipe(
-      tap( participant => {
-          this.participantsSignal.update(participants => [...participants, participant]);
+  createParticipant( participant: Participant ): Observable<Participant> {
+    const url = `${ this.baseUrl }/participants`
+    return this.http.post<Participant>( url, participant )
+      .pipe(
+        tap( participant => {
+          this.participantsSignal.update( participants => [ ...participants, participant ] );
         }
-      )
-    );
+        )
+      );
   }
 
-  updateParticipant(participant: Participant): Observable<Participant> {
+  updateParticipant( participant: Participant ): Observable<Participant> {
     const { _id, ...updateParticipant } = participant;
-    const url = `${this.baseUrl}/participants/${_id}`
-    return this.http.patch<Participant>(url, updateParticipant).pipe(
-      tap(participant => {
-        this.participantsSignal.update(participants =>
-          participants.map(element =>
-            element._id === participant._id ? participant : element)
+    const url = `${ this.baseUrl }/participants/${ _id }`
+    return this.http.patch<Participant>( url, updateParticipant ).pipe(
+      tap( participant => {
+        this.participantsSignal.update( participants =>
+          participants.map( element =>
+            element._id === participant._id ? participant : element )
         );
-      }),
+      } ),
     );
   }
 
-  deleteParticipant(id: string): Observable<Participant> {
-    const url = `${this.baseUrl}/participants/${id}`
-    return this.http.delete<Participant>(url)
+  deleteParticipant( id: string ): Observable<Participant> {
+    const url = `${ this.baseUrl }/participants/${ id }`
+    return this.http.delete<Participant>( url )
       .pipe(
         tap( () => {
           this.participantsSignal.update( participants =>
-            participants.filter(element => element._id !== id ));
-        })
+            participants.filter( element => element._id !== id ) );
+        } )
       )
-    ;
+      ;
   }
 
   get participants(): Signal<Participant[]> {
@@ -70,8 +70,8 @@ export class ParticipantsService implements OnInit {
 
   ngOnInit(): void {
     this.getParticipants()
-      .subscribe(participants => {
-        this.participantsSignal.set(participants);
-      })
+      .subscribe( participants => {
+        this.participantsSignal.set( participants );
+      } )
   }
 }
