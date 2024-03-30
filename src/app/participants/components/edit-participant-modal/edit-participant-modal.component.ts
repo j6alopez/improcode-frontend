@@ -3,58 +3,57 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
 import { Participant } from '../../interfaces/participant.interface';
 import { ParticipantsService } from '../../participants.service';
 
-@Component({
+@Component( {
   selector: 'edit-participant-modal',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ ReactiveFormsModule ],
   templateUrl: './edit-participant-modal.component.html',
   styleUrl: './edit-participant-modal.component.scss'
-})
-export class EditParticipantModalComponent implements OnInit{
+} )
+export class EditParticipantModalComponent {
 
-  private participantsService: ParticipantsService = inject(ParticipantsService);
+  private participantsService: ParticipantsService = inject( ParticipantsService );
 
-  @ViewChild('dialog')
+  @ViewChild( 'dialog' )
   dialog!: ElementRef<HTMLDialogElement>;
 
   participant!: Participant
 
-  constructor(private elementRef: ElementRef<HTMLDialogElement>) {
+  constructor( private elementRef: ElementRef<HTMLDialogElement> ) {
   }
 
-
-  public editParticipant: FormGroup = new FormGroup({
+  public editParticipant: FormGroup = new FormGroup( {
     firstname: new FormControl(
-     '',
+      '',
       [
         Validators.required
-      ]),
+      ] ),
     lastname: new FormControl(
       '',
       [
         Validators.required
-      ]),
+      ] ),
     phone: new FormControl(
       '',
       [
         Validators.required
-      ]),
+      ] ),
     location: new FormControl(
       '',
       [
         Validators.required
-      ]),
+      ] ),
     distance: new FormControl(
       '',
       [
         Validators.required
-      ])
-  })
+      ] )
+  } )
 
 
-  openDialog( participant: Participant): void {
+  openDialog( participant: Participant ): void {
     this.participant = participant;
-    this.editParticipant.patchValue({...participant });
+    this.editParticipant.patchValue( { ...participant } );
     this.dialog.nativeElement.showModal();
   }
   closeDialog(): void {
@@ -67,16 +66,10 @@ export class EditParticipantModalComponent implements OnInit{
   }
 
   onConfirm() {
-    if( !this.editParticipant.valid ) return;
+    if ( !this.editParticipant.valid ) return;
     const updatedParticipant = { ...this.participant, ...this.editParticipant.value }
-    this.participantsService.updateParticipant(updatedParticipant).subscribe();
+    this.participantsService.updateParticipant( updatedParticipant ).subscribe();
     this.closeDialog();
-  }
-
-  ngOnInit(): void {
-    this.dialog.nativeElement.addEventListener('click', event => {
-      event.preventDefault();
-    })
   }
 
 }

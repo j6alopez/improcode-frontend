@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, ViewChild, inject, OnInit, Signal, computed } from '@angular/core';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions, EventClickArg, EventInput } from '@fullcalendar/core';
+import { Calendar, CalendarOptions, EventClickArg, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import interactionPlugin from '@fullcalendar/interaction';
 import { AddEventComponent } from '../../../calendar-events/components/add-event/add-event.component';
-import { Observable, filter, map, of, switchMap, tap } from 'rxjs';
+import { Observable, filter, map, of, switchMap, tap, concatMap } from 'rxjs';
 import { CalendarEvent } from '../../../shared/events/calendar.event.interface';
 import { CalendarEventsService } from '../../../calendar-events/calendar-events.service';
 import { DateClickInfo } from '../../../third-party/full-calendar/date-click-info.interface';
@@ -37,11 +37,11 @@ export class HomePageComponent implements OnInit, AfterViewInit {
 
   private calendarEventService = inject( CalendarEventsService );
 
-  public currentEvents!: Signal<CalendarEvent[]>;
   public fullCalendarEvents!: Signal<EventInput[]>;
+  public calendarEvents!: Signal<CalendarEvent[]>;
 
 
-  private eventToDelete: EventInput = {};
+  private eventToDelete: CalendarEvent | undefined = undefined;
 
   public calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
@@ -74,27 +74,11 @@ export class HomePageComponent implements OnInit, AfterViewInit {
   }
 
   handleEventClick( clickInfo: EventClickArg ) {
-    const { title, start, end } = clickInfo.event;
-    this.eventToDelete = this.fullCalendarEvents().filter( event => {
-      event.title === title && event.start === start && event.end === end
-    } )
+    const { title } = clickInfo.event._def;
+    this.eventToDelete = this.calendarEvents().find( element => {
+      return element.title === title;
+    } );
     this.deleteEventDialog?.openDialog();
-  }
-
-  ngOnInit(): void {
-    this.currentEvents = computed( () => {
-      return this.calendarEventService.calendarEvents();
-    } );
-
-    this.fullCalendarEvents = computed( () => {
-      return MapperCalendar.ToMulitpleEventInputs( this.currentEvents() )
-    } );
-
-  }
-
-  ngAfterViewInit(): void {
-    this.handleAddEvent();
-    this.handleDeleteEvent();
   }
 
   private handleAddEvent(): void {
@@ -107,12 +91,31 @@ export class HomePageComponent implements OnInit, AfterViewInit {
   private handleDeleteEvent(): void {
     this.deleteEventDialogClosed = this.deleteEventDialog.afterClosed();
     this.deleteEventDialogClosed.pipe(
-      tap( deletionConfirmed => {
-        if ( deletionConfirmed ) {
-          this.eventToDelete = {};
+      filter( confirmed => confirmed ),
+      concatMap( () => {
+        if ( this.eventToDelete && this.eventToDelete._id ) {
+          return this.calendarEventService.deleteCalendarEvent( this.eventToDelete._id );
         }
-      } ),
-      filter( deleteAction => deleteAction )
+        return of();
+      } )
+
     ).subscribe();
   }
+
+
+  ngOnInit(): void {
+    this.calendarEvents = computed( () => {
+      return this.calendarEventService.calendarEvents();
+    } )
+    this.fullCalendarEvents = computed( () => {
+      return MapperCalendar.ToMulitpleEventInputs( this.calendarEvents() )
+    } );
+
+  }
+
+  ngAfterViewInit(): void {
+    this.handleAddEvent();
+    this.handleDeleteEvent();
+  }
+
 }
