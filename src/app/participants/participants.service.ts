@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit, Signal, inject, signal } from '@angular/core';
-import { Participant } from '../interfaces/participant.interface';
-import { environment } from '../../../environments/environment';
+import { Participant } from './interfaces/participant.interface';
+import { environment } from '../../environments/environment';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({

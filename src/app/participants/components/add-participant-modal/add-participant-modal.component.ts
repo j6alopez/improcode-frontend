@@ -2,50 +2,49 @@ import { Component, ElementRef, Input, ViewChild, inject } from '@angular/core';
 import { Modal } from '../../../shared/modals/interfaces/modal.interface';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Distance } from '../enums/distance.enum';
-import { ParticipantsService } from '../../services/participants.service';
+import { ParticipantsService } from '../../participants.service';
 import { Participant } from '../../interfaces/participant.interface';
 
-@Component({
+@Component( {
   selector: 'add-participant-modal',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ ReactiveFormsModule ],
   templateUrl: './add-participant-modal.component.html',
   styleUrl: './add-participant-modal.component.scss'
-})
-export class AddParticipantModalComponent implements Modal {
+} )
+export class AddParticipantModalComponent {
 
-  private participantsService: ParticipantsService = inject(ParticipantsService);
+  private participantsService: ParticipantsService = inject( ParticipantsService );
 
-
-  @Input( )
+  @Input()
   participant!: Participant
 
-  @ViewChild('dialog')
+  @ViewChild( 'dialog' )
   dialog!: ElementRef<HTMLDialogElement>;
 
-  constructor(private elementRef: ElementRef<HTMLDialogElement>) {
+  constructor( private elementRef: ElementRef<HTMLDialogElement> ) {
   }
 
-  public addParticipant: FormGroup = new FormGroup({
-    firstname: new FormControl('', [
+  public addParticipant: FormGroup = new FormGroup( {
+    firstname: new FormControl( '', [
       Validators.required
-    ]),
-    lastname: new FormControl('', [
+    ] ),
+    lastname: new FormControl( '', [
       Validators.required
-    ]),
-    phone: new FormControl('', [
+    ] ),
+    phone: new FormControl( '', [
       Validators.required
-    ]),
-    email: new FormControl('', [
+    ] ),
+    email: new FormControl( '', [
       Validators.required
-    ]),
-    location: new FormControl('', [
+    ] ),
+    location: new FormControl( '', [
       Validators.required
-    ]),
-    distance: new FormControl(Distance.KM_37, [
+    ] ),
+    distance: new FormControl( Distance.KM_37, [
       Validators.required
-    ])
-  })
+    ] )
+  } )
 
   openDialog(): void {
     this.dialog.nativeElement.showModal();
@@ -59,19 +58,19 @@ export class AddParticipantModalComponent implements Modal {
   }
 
   onConfirm() {
-    this.participantsService.createParticipant(this.participant)
+    this.participantsService.createParticipant( this.participant )
     this.closeDialog();
   }
 
   onSubmit(): void {
-    if (this.addParticipant.invalid) {
+    if ( this.addParticipant.invalid ) {
       this.addParticipant.markAllAsTouched();
       return;
     }
     const participant: Participant = this.addParticipant.value;
-    this.participantsService.createParticipant(participant).subscribe(participant => {
+    this.participantsService.createParticipant( participant ).subscribe( participant => {
       this.closeDialog();
-    })
+    } )
   }
 
 }

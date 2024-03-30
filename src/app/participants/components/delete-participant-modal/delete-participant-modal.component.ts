@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, ViewChild, inject } from '@angular/core';
 import { Participant } from '../../interfaces/participant.interface';
-import { ParticipantsService } from '../../services/participants.service';
+import { ParticipantsService } from '../../participants.service';
 
 @Component({
   selector: 'delete-participant-modal',

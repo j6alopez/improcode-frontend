@@ -1,0 +1,31 @@
+<dialog class="custmodal" id="modal" #dialog>
+  <h4 class="text-center">Add Participant</h4>
+  <hr class="bg-secondary">
+  <form [formGroup]="addEvent" (ngSubmit)="onConfirm()" autocomplete="off"
+    class="d-flex flex-column flex-md-row flex-md-wrap justify-content-center justify-content-sm-space">
+
+    <div class="mb-3 col-12 col-6-md">
+      <label for="title" class="form-label">Title</label>
+      <input type="text" formControlName='title' class="form-control" id="title" placeholder="Course 47km">
+    </div>
+
+    <div class="mb-3 col-12 col-6-md">
+      <label for="start" class="form-label">Start</label>
+      <input type="time" formControlName='start' class="form-control" id="start">
+    </div>
+
+    <div class="mb-3 col-12 col-6-md">
+      <label for="end" class="form-label">Start</label>
+      <input type="time" formControlName='end' class="form-control" id="end">
+    </div>
+
+    <div class="justify-content-lg-end">
+      <button type="submit" class="btn btn-primary flex-grow-1 flex-md-grow-0 mx-3 my-1 px-md-5">
+        Confirm
+      </button>
+      <button type= "button" class="btn btn-danger flex-grow-1 flex-md-grow-0 mx-3 my-1 px-md-5" (click)="onCancel()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</dialog>

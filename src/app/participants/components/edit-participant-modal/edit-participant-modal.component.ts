@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Participant } from '../../interfaces/participant.interface';
-import { ParticipantsService } from '../../services/participants.service';
+import { ParticipantsService } from '../../participants.service';
 
 @Component({
   selector: 'edit-participant-modal',

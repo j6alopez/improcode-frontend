@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
 import { Participant } from '../../interfaces/participant.interface';
 import { DeleteParticipantModalComponent } from '../delete-participant-modal/delete-participant-modal.component';
-import { ParticipantsService } from '../../services/participants.service';
+import { ParticipantsService } from '../../participants.service';
 import { EditParticipantModalComponent } from '../edit-participant-modal/edit-participant-modal.component';
 
 @Component({

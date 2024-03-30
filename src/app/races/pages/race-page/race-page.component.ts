@@ -1,8 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild, inject } from '@angular/core';
+
 import { LngLat, Map, Marker } from 'mapbox-gl';
+
 import { MarkerAndColor } from '../../interfaces/marker-and-color.interface'
 import { MapLocationService } from '../../services/map-location.service';
-import { CommonModule } from '@angular/common';
 import { MapLocation } from '../../interfaces/map-location.interface';
 
 @Component({
