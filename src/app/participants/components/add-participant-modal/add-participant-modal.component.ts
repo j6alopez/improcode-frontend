@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, ViewChild, inject } from '@angular/core';
-import { Modal } from '../../../shared/modals/interfaces/modal.interface';
+import { Modal } from '../../../shared/modals/modal.interface';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Distance } from '../enums/distance.enum';
 import { ParticipantsService } from '../../participants.service';

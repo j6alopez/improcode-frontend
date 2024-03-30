@@ -4,7 +4,7 @@ import { DeleteParticipantModalComponent } from '../delete-participant-modal/del
 import { ParticipantsService } from '../../participants.service';
 import { EditParticipantModalComponent } from '../edit-participant-modal/edit-participant-modal.component';
 
-@Component({
+@Component( {
   selector: 'participants-list',
   standalone: true,
   imports: [
@@ -13,10 +13,10 @@ import { EditParticipantModalComponent } from '../edit-participant-modal/edit-pa
   ],
   templateUrl: './participant-list.component.html',
   styleUrl: './participant-list.component.scss'
-})
+} )
 export class ParticipantListComponent {
 
-  private participantsService = inject(ParticipantsService);
+  private participantsService = inject( ParticipantsService );
 
   @Input()
   participants: Participant[] = [];
@@ -26,12 +26,12 @@ export class ParticipantListComponent {
   onRemoveClicked = new EventEmitter<Participant>();
 
 
-  editClicked(index: number): void {
-    this.onEditClicked.emit(this.participants[index]);
+  editClicked( index: number ): void {
+    this.onEditClicked.emit( this.participants[ index ] );
   }
 
-  removeClicked(index: number): void {
-    this.onRemoveClicked.emit(this.participants[index]);
+  removeClicked( index: number ): void {
+    this.onRemoveClicked.emit( this.participants[ index ] );
   }
 
 
