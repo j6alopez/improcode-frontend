@@ -67,8 +67,8 @@ export class CalendarEventsService {
 
   ngOnInit(): void {
     this.getCalendarEvents()
-      .subscribe( CalendarEvents => {
-        this.calendarEventsSignal.set( CalendarEvents );
+      .subscribe( calendarEvents => {
+        this.calendarEventsSignal.set( calendarEvents );
       } )
   }
 }

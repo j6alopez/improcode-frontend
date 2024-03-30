@@ -1,32 +1,47 @@
-import { AfterViewInit, Component, ViewChild, inject } from '@angular/core';
-import { FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions, EventClickArg } from '@fullcalendar/core';
+import { AfterViewInit, Component, ViewChild, inject, OnInit, Signal, computed } from '@angular/core';
+import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
+import { CalendarOptions, EventClickArg, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import interactionPlugin from '@fullcalendar/interaction';
 import { AddEventComponent } from '../../../calendar-events/components/add-event/add-event.component';
-import { Observable, filter } from 'rxjs';
+import { Observable, filter, map, of, switchMap, tap } from 'rxjs';
 import { CalendarEvent } from '../../../shared/events/calendar.event.interface';
 import { CalendarEventsService } from '../../../calendar-events/calendar-events.service';
 import { DateClickInfo } from '../../../third-party/full-calendar/date-click-info.interface';
+import { MapperCalendar } from '../../../calendar-events/mappers/MapperCalendar';
+import { DeleteEventComponent } from '../../../calendar-events/components/delete-event/delete-event.component';
 
 @Component( {
-  selector: 'app-home-page',
+  selector: 'home-page',
   standalone: true,
   imports: [
     FullCalendarModule,
     AddEventComponent,
+    DeleteEventComponent
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'
 } )
-export class HomePageComponent implements AfterViewInit {
-
-  private calendarEventService = inject( CalendarEventsService );
+export class HomePageComponent implements OnInit, AfterViewInit {
 
   @ViewChild( 'addEventDialog' )
   public addEventDialog!: AddEventComponent;
+
+  @ViewChild( 'deleteEventDialog' )
+  public deleteEventDialog!: DeleteEventComponent;
+
+  @ViewChild( 'calendar' )
+  public calendar!: FullCalendarComponent;
+
+  private calendarEventService = inject( CalendarEventsService );
+
+  public currentEvents!: Signal<CalendarEvent[]>;
+  public fullCalendarEvents!: Signal<EventInput[]>;
+
+
+  private eventToDelete: EventInput = {};
 
   public calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
@@ -46,43 +61,58 @@ export class HomePageComponent implements AfterViewInit {
         editable: true,
         selectable: true,
         dateClick: this.handleDateClick.bind( this ),
-        event: this.handleEventClick.bind( this )
+        eventClick: this.handleEventClick.bind( this )
       }
     },
-    events: [
-      {
-        title: 'First Race',
-        start: '2024-03-28 09:00',
-        end: '2024-03-28 13:00',
-      },
-      {
-        title: 'Second Race',
-        start: '2024-03-30',
-        color: 'red'
-      }
-    ],
   };
 
-  public modalClosed?: Observable<CalendarEvent | undefined>;
+  private addEventDialogClosed?: Observable<CalendarEvent | undefined>;
+  private deleteEventDialogClosed?: Observable<boolean>;
 
   handleDateClick( dateClickInfo: any ) {
     this.addEventDialog?.openDialog( dateClickInfo as DateClickInfo );
   }
 
   handleEventClick( clickInfo: EventClickArg ) {
-    alert( 'event' );
+    const { title, start, end } = clickInfo.event;
+    this.eventToDelete = this.fullCalendarEvents().filter( event => {
+      event.title === title && event.start === start && event.end === end
+    } )
+    this.deleteEventDialog?.openDialog();
   }
 
-  ngAfterViewInit(): void {
-    this.modalClosed = this.addEventDialog.closeDialog();
-    this.modalClosed.pipe(
-      filter( event => event !== undefined )
-    ).subscribe( ( event ) => {
-      this.calendarEventService.createCalendarEvent( event! ).subscribe();
+  ngOnInit(): void {
+    this.currentEvents = computed( () => {
+      return this.calendarEventService.calendarEvents();
+    } );
+
+    this.fullCalendarEvents = computed( () => {
+      return MapperCalendar.ToMulitpleEventInputs( this.currentEvents() )
     } );
 
   }
+
+  ngAfterViewInit(): void {
+    this.handleAddEvent();
+    this.handleDeleteEvent();
+  }
+
+  private handleAddEvent(): void {
+    this.addEventDialogClosed = this.addEventDialog.afterClosed();
+    this.addEventDialogClosed.pipe(
+      filter( event => event !== undefined )
+    ).subscribe();
+  }
+
+  private handleDeleteEvent(): void {
+    this.deleteEventDialogClosed = this.deleteEventDialog.afterClosed();
+    this.deleteEventDialogClosed.pipe(
+      tap( deletionConfirmed => {
+        if ( deletionConfirmed ) {
+          this.eventToDelete = {};
+        }
+      } ),
+      filter( deleteAction => deleteAction )
+    ).subscribe();
+  }
 }
-
-
-

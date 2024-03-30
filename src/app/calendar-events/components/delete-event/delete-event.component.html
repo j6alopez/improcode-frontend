@@ -1,0 +1,17 @@
+<dialog class="custmodal" id="modal" #dialog>
+  <h4 class="text-center">Remove Event</h4>
+  <hr class="bg-secondary">
+  <p>Do you confirm the deletion of the event?</p>
+  <div class="justify-content-lg-end">
+    <button type="button" class="btn btn-primary flex-grow-1 flex-md-grow-0 mx-3 my-1 px-md-5"
+    (click)="onConfirm()"
+    >
+      Confirm
+    </button>
+    <button type="button" class="btn btn-danger flex-grow-1 flex-md-grow-0 mx-3 my-1 px-md-5"
+    (click)="onCancel()"
+    >
+      Cancel
+    </button>
+  </div>
+</dialog>

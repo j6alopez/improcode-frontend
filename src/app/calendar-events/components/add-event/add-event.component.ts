@@ -46,7 +46,7 @@ export class AddEventComponent implements Modal<any, CalendarEvent | undefined>,
     this.addEventForm.get( 'end_date' )?.setValue( endEventDate.toISOString().substring( 0, 16 ) );
   }
 
-  closeDialog(): Observable<CalendarEvent | undefined> {
+  afterClosed(): Observable<CalendarEvent | undefined> {
     return this.dialogConfirmed.asObservable();
   }
 
@@ -61,7 +61,7 @@ export class AddEventComponent implements Modal<any, CalendarEvent | undefined>,
       return;
     }
     this.dialog.nativeElement.close();
-    
+
     this.calendarEvent = this.addEventForm.value;
     this.dialogConfirmed.next( this.calendarEvent );
   }
