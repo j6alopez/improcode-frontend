@@ -58,7 +58,6 @@ export class AddParticipantModalComponent {
   }
 
   onConfirm() {
-    this.participantsService.createParticipant( this.participant )
     this.closeDialog();
   }
 

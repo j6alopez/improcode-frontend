@@ -13,7 +13,7 @@ export const routes: Routes = [
   },
   {
     path: 'races',
-    loadChildren: () => import( './races/races.routes' ).then( r => r.RACES_ROUTES )
+    loadChildren: () => import( './races/races.routes' ).then( r => r.PLACES_ROUTES )
   },
   {
     path: 'charts',

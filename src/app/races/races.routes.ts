@@ -1,13 +1,13 @@
 import { Routes } from "@angular/router";
 import { LayoutPageComponent } from "./pages/layout-page/layout-page.component";
-import { RacePageComponent } from "./pages/race-page/race-page.component";
+import { PlacesPageComponent as PlacesPageComponent } from "./pages/places-page/places-page.component";
 
-export const RACES_ROUTES: Routes = [
+export const PLACES_ROUTES: Routes = [
   {
     path: '',
     component: LayoutPageComponent,
     children: [
-      { path: '', component: RacePageComponent },
+      { path: '', component: PlacesPageComponent },
       { path: '**', redirectTo: 'home' },
     ],
   },

@@ -6,17 +6,18 @@ import { LngLat, Map, Marker } from 'mapbox-gl';
 import { LocationMarker } from '../../interfaces/location-marker.interface'
 import { MapLocationService } from '../../services/map-location.service';
 import { MapLocation } from '../../interfaces/map-location.interface';
+import { environment } from '../../../../environments/environment';
 
 @Component( {
-  selector: 'races-race-page',
+  selector: 'places-page',
   standalone: true,
   imports: [
     CommonModule
   ],
-  templateUrl: './race-page.component.html',
-  styleUrl: './race-page.component.scss'
+  templateUrl: './places-page.component.html',
+  styleUrl: './places-page.component.scss'
 } )
-export class RacePageComponent implements OnInit, AfterViewInit {
+export class PlacesPageComponent implements OnInit, AfterViewInit {
 
   private mapLocationService = inject( MapLocationService );
   public mapLocations!: Signal<MapLocation[]>;
@@ -46,7 +47,7 @@ export class RacePageComponent implements OnInit, AfterViewInit {
     }
 
     this.map = new Map( {
-      accessToken: 'pk.eyJ1IjoiajZhbG9wZXoiLCJhIjoiY2x0cHk0Y2hoMDBjdDJucDVhZHZtdjlkaiJ9.pGR72nD2VdxKD9FY4T89Qg',
+      accessToken: environment.mapbox_key,
       container: this.divMap.nativeElement, // container ID
       style: 'mapbox://styles/mapbox/streets-v12', // style URL
       center: this.currentLngLat, // starting position [lng, lat]
