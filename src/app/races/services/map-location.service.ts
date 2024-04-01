@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit, inject, signal } from '@angular/core';
+import { Injectable, OnInit, Signal, inject, signal } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { MapLocation } from '../interfaces/map-location.interface';
 import { Observable, tap } from 'rxjs';
@@ -15,6 +15,10 @@ export class MapLocationService implements OnInit {
 
   constructor() {
     this.ngOnInit();
+  }
+
+  get mapLocations(): Signal<MapLocation[]> {
+    return this.locationsSignal.asReadonly();
   }
 
   getLocations(): Observable<MapLocation[]> {

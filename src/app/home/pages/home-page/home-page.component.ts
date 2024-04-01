@@ -106,7 +106,7 @@ export class HomePageComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.calendarEvents = computed( () => {
       return this.calendarEventService.calendarEvents();
-    } )
+    } );
     this.fullCalendarEvents = computed( () => {
       return MapperCalendar.ToMulitpleEventInputs( this.calendarEvents() )
     } );

@@ -17,8 +17,8 @@
 </div>
 
 <ul class="list-group">
-  @for ( colorMarker of markers; track $index;) {
-  <li class="list-group-item" [ngStyle]="{backgroundColor : colorMarker.color}" (click)="flyTo(colorMarker.marker)"
+  @for ( marker of markers; track $index;) {
+  <li class="list-group-item" [ngStyle]="{backgroundColor : marker.location.color}" (click)="flyTo(marker.marker)"
     (dblclick)="deleteMarker($index)">
     Marker {{ $index + 1 }}
   </li>

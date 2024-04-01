@@ -16,6 +16,11 @@ export const routes: Routes = [
     loadChildren: () => import( './races/races.routes' ).then( r => r.RACES_ROUTES )
   },
   {
+    path: 'charts',
+    loadChildren: () => import( './charts/charts.routes' ).then( r => r.CHARTS_ROUTES )
+  },
+
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',

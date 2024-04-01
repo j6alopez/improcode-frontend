@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, Signal, ViewChild, computed, inject } from '@angular/core';
 
 import { LngLat, Map, Marker } from 'mapbox-gl';
 
-import { MarkerAndColor } from '../../interfaces/marker-and-color.interface'
+import { LocationMarker } from '../../interfaces/location-marker.interface'
 import { MapLocationService } from '../../services/map-location.service';
 import { MapLocation } from '../../interfaces/map-location.interface';
 
@@ -16,17 +16,28 @@ import { MapLocation } from '../../interfaces/map-location.interface';
   templateUrl: './race-page.component.html',
   styleUrl: './race-page.component.scss'
 } )
-export class RacePageComponent {
+export class RacePageComponent implements OnInit, AfterViewInit {
 
   private mapLocationService = inject( MapLocationService );
+  public mapLocations!: Signal<MapLocation[]>;
 
   @ViewChild( 'map' )
   public divMap?: ElementRef;
 
-  public markers: MarkerAndColor[] = [];
+  public markers: LocationMarker[] = [];
   public map?: Map;
   public currentLngLat: LngLat = new LngLat( 2.4443313638995505, 41.55070089439985 );
   public zoom: number = 10;
+
+  ngOnInit(): void {
+    this.mapLocations = computed( () => {
+      return this.mapLocationService.mapLocations();
+    } )
+    this.mapLocationService.getLocations().subscribe( locations =>
+      locations.forEach( location => {
+        this.toMarker( location );
+      } ) );
+  }
 
   ngAfterViewInit(): void {
 
@@ -46,16 +57,23 @@ export class RacePageComponent {
 
   }
 
-  createMarker() {
-    if ( !this.map ) return;
-
-    const color = '#xxxxxx'.replace( /x/g, y => ( Math.random() * 16 | 0 ).toString( 16 ) );
-    const lngLat = this.map.getCenter();
+  toMarker( location: MapLocation ) {
+    if ( !location ) return;
+    const color = location.color;
+    const lngLat: LngLat = new LngLat( location.lng, location.lat );
 
     this.addMarker( lngLat, color );
   }
 
-  addMarker( lngLat: LngLat, color: string ) {
+  createMarker() {
+    if ( !this.map ) return;
+    const color = '#xxxxxx'.replace( /x/g, y => ( Math.random() * 16 | 0 ).toString( 16 ) );
+    const lngLat = this.map.getCenter();
+
+    this.addMarker( lngLat, color, true );
+  }
+
+  addMarker( lngLat: LngLat, color: string, persistMarker: boolean = false ) {
     if ( !this.map ) return;
     const marker = new Marker( {
       color: color,
@@ -66,17 +84,19 @@ export class RacePageComponent {
 
     const location: MapLocation = {
       ...lngLat,
+      color,
       zoom: this.map.getZoom()
     }
 
-    this.mapLocationService.createLocation( location )
-      .subscribe( ( location ) => {
-        this.markers.push( { location, marker, color } );
-      }
-      );
+    if ( persistMarker ) {
+      this.mapLocationService.createLocation( location )
+        .subscribe( ( location ) => {
+          this.markers.push( { location, marker } );
+        } );
+    }
 
     marker.on( 'dragend', () => {
-      const markerOnList: MarkerAndColor | undefined = this.markers.find( element => element.marker === marker );
+      const markerOnList: LocationMarker | undefined = this.markers.find( element => element.marker === marker );
       if ( !markerOnList ) {
         return;
       }
@@ -88,7 +108,7 @@ export class RacePageComponent {
 
       const { lng, lat } = currentMarker.getLngLat();
       const updateLocation: MapLocation = {
-        _id, zoom: this.map!.getZoom(), lng, lat,
+        _id, zoom: this.map!.getZoom(), lng, lat, color
       }
 
       this.mapLocationService.updateLocation( updateLocation ).subscribe();

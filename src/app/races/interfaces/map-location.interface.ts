@@ -4,5 +4,6 @@ export interface MapLocation {
   lng: number;
   lat: number;
   zoom: number;
+  color: string;
 
 }
