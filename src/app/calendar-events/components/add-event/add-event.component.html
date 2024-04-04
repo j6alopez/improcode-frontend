@@ -7,6 +7,14 @@
     <div class="mb-3 col-12 col-6-md">
       <label for="title" class="form-label">Title</label>
       <input type="text" formControlName='title' class="form-control" id="title" placeholder="Course 47km">
+      @if ( isNotValidField('title') ) {
+        <div class="text-center text-sm-start">
+          <small class="text-danger mt-1">
+            title is required
+          </small>
+
+        </div>
+      }
     </div>
 
     <div class="mb-3 col-12 col-6-md">
@@ -17,6 +25,13 @@
     <div class="mb-3 col-12 col-6-md">
       <label for="end_date" class="form-label">End</label>
       <input type="datetime-local" formControlName='end_date' class="form-control" id="end_date">
+      @if ( addEventForm.touched && addEventForm.hasError('notGreater') ) {
+      <div>
+        <p class="text-danger text-center mt-3">
+          <small>End date must be after start date</small>
+        </p>
+      </div>
+      }
     </div>
 
     <div class="justify-content-lg-end">
