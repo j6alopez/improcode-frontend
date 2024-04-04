@@ -5,7 +5,7 @@ import { CalendarOptions, EventClickArg, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { Observable, concatMap, filter, of } from 'rxjs';
+import { Observable, concatMap, filter, of, tap } from 'rxjs';
 import { CalendarEventsService } from '../../../calendar-events/calendar-events.service';
 import { AddEventComponent } from '../../../calendar-events/components/add-event/add-event.component';
 import { DeleteEventComponent } from '../../../calendar-events/components/delete-event/delete-event.component';
@@ -53,15 +53,16 @@ export class HomePageComponent implements OnInit, AfterViewInit {
     },
     locale: 'en',
     timeZone: 'GMT+1',
+    selectable: true,
+    editable: true,
+    allDayContent: true,
+    dateClick: this.handleDateClick.bind( this ),
+    eventClick: this.handleEventClick.bind( this ),
     views: {
       timeGridFiveDay: {
         type: 'timeGrid',
         duration: { days: 5 },
         buttonText: '5 days',
-        editable: true,
-        selectable: true,
-        dateClick: this.handleDateClick.bind( this ),
-        eventClick: this.handleEventClick.bind( this )
       }
     },
   };
@@ -84,7 +85,10 @@ export class HomePageComponent implements OnInit, AfterViewInit {
   private handleAddEvent(): void {
     this.addEventDialogClosed = this.addEventDialog.afterClosed();
     this.addEventDialogClosed.pipe(
-      filter( event => event !== undefined )
+      filter( event => event !== undefined ),
+      concatMap( event => {
+        return this.calendarEventService.createCalendarEvent( event! );
+      })
     ).subscribe();
   }
 

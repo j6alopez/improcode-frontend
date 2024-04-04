@@ -12,8 +12,8 @@ export const routes: Routes = [
     loadChildren: () => import( './participants/participants.routes' ).then( r => r.PARTICIPANTS_ROUTES )
   },
   {
-    path: 'races',
-    loadChildren: () => import( './races/races.routes' ).then( r => r.PLACES_ROUTES )
+    path: 'places',
+    loadChildren: () => import( './places/places.routes' ).then( r => r.PLACES_ROUTES )
   },
   {
     path: 'charts',
