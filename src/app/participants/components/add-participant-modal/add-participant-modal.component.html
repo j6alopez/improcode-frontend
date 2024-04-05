@@ -1,7 +1,7 @@
 <dialog class="custmodal" id="modal" #dialog>
   <h4 class="text-center">Add Participant</h4>
   <hr class="bg-secondary">
-  <form [formGroup]="addParticipant" (ngSubmit)="onSubmit()" autocomplete="off"
+  <form [formGroup]="addParticipant" (ngSubmit)="onConfirm()" autocomplete="off"
     class="d-flex flex-column flex-md-row flex-md-wrap justify-content-center justify-content-sm-space">
     <div class="mb-3 col-12 col-6-md">
       <label for="fistname" class="form-label">Firstname</label>
@@ -39,7 +39,7 @@
       <button type="submit" class="btn btn-primary flex-grow-1 flex-md-grow-0 mx-3 my-1 px-md-5">
         Save
       </button>
-      <button class="btn btn-danger flex-grow-1 flex-md-grow-0 mx-3 my-1 px-md-5" (click)="closeDialog()"> Cancel
+      <button class="btn btn-danger flex-grow-1 flex-md-grow-0 mx-3 my-1 px-md-5" (click)="onCancel()"> Cancel
       </button>
     </div>
   </form>

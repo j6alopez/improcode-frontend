@@ -91,7 +91,6 @@ export class AddEventComponent implements Modal<any, CalendarEvent | undefined>,
   }
 
   ngOnDestroy(): void {
-
     this.dialogConfirmed.unsubscribe();
   }
 

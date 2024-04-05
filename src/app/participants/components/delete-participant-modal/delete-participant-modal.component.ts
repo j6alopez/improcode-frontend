@@ -1,6 +1,7 @@
-import { Component, ElementRef, Input, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Participant } from '../../interfaces/participant.interface';
-import { ParticipantsService } from '../../participants.service';
+import { Observable, Subject } from 'rxjs';
+import { Modal } from '../../../shared/modals/modal.interface';
 
 @Component( {
   selector: 'delete-participant-modal',
@@ -9,34 +10,37 @@ import { ParticipantsService } from '../../participants.service';
   templateUrl: './delete-participant-modal.component.html',
   styleUrl: './delete-participant-modal.component.scss'
 } )
-export class DeleteParticipantModalComponent {
+export class DeleteParticipantModalComponent implements Modal<Participant, Participant | undefined>, OnDestroy{
 
-  private participantsService = inject( ParticipantsService );
+  private dialogSelection: Subject<Participant | undefined> = new Subject<Participant | undefined>();
 
-  @Input()
   participant!: Participant
 
   @ViewChild( 'dialog' )
   dialog!: ElementRef<HTMLDialogElement>;
 
-  openDialog( participant: Participant ): void {
+
+  openDialog(participant: Participant): void {
     this.participant = participant;
     this.dialog.nativeElement.showModal();
   }
 
-  closeDialog(): void {
-    this.dialog.nativeElement.close();
-  }
-
   onCancel() {
-    this.closeDialog();
+    this.dialog.nativeElement.close();
+    this.dialogSelection.next( undefined );
   }
 
   onConfirm() {
-    const { _id } = this.participant;
-    if ( !_id ) return;
-    this.participantsService.deleteParticipant( _id ).subscribe();
-    this.closeDialog();
+    this.dialog.nativeElement.close();
+    this.dialogSelection.next( this.participant );
+  }
+
+  afterClosed(): Observable<Participant | undefined> {
+    return this.dialogSelection.asObservable();
+  }
+
+  ngOnDestroy(): void {
+    this.dialogSelection.unsubscribe();
   }
 
 }

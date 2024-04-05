@@ -1,7 +1,8 @@
-import { Component, ElementRef, Input, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Participant } from '../../interfaces/participant.interface';
-import { ParticipantsService } from '../../participants.service';
+import { Observable, Subject } from 'rxjs';
+import { Modal } from '../../../shared/modals/modal.interface';
 
 @Component( {
   selector: 'edit-participant-modal',
@@ -10,14 +11,14 @@ import { ParticipantsService } from '../../participants.service';
   templateUrl: './edit-participant-modal.component.html',
   styleUrl: './edit-participant-modal.component.scss'
 } )
-export class EditParticipantModalComponent {
+export class EditParticipantModalComponent implements Modal<Participant, Participant | undefined> {
 
-  private participantsService: ParticipantsService = inject( ParticipantsService );
+  private dialogConfirmed: Subject<Participant | undefined> = new Subject<Participant | undefined>();
 
   @ViewChild( 'dialog' )
   dialog!: ElementRef<HTMLDialogElement>;
 
-  participant!: Participant
+  private participant!: Participant
 
   constructor( private elementRef: ElementRef<HTMLDialogElement> ) {
   }
@@ -62,14 +63,21 @@ export class EditParticipantModalComponent {
 
   onCancel() {
     this.editParticipant.reset();
+    this.dialogConfirmed.next( undefined );
     this.closeDialog();
   }
 
   onConfirm() {
-    if ( !this.editParticipant.valid ) return;
-    const updatedParticipant = { ...this.participant, ...this.editParticipant.value }
-    this.participantsService.updateParticipant( updatedParticipant ).subscribe();
-    this.closeDialog();
+    this.dialog.nativeElement.close();
+
+    this.dialogConfirmed.next( {
+      ...this.participant,
+      ...this.editParticipant.value,
+    } );
+  }
+
+  afterClosed(): Observable<Participant | undefined> {
+    return this.dialogConfirmed.asObservable();
   }
 
 }

@@ -16,8 +16,6 @@ import { EditParticipantModalComponent } from '../edit-participant-modal/edit-pa
 } )
 export class ParticipantListComponent {
 
-  private participantsService = inject( ParticipantsService );
-
   @Input()
   participants: Participant[] = [];
   @Output()

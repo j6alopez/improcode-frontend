@@ -13,7 +13,8 @@ export class ValidatorService {
       const formGroup = control as FormGroup;
       const fieldValue1 = formGroup.get(field1)?.value;
       const fieldValue2 = formGroup.get(field2)?.value;
-      if( fieldValue1 !>= fieldValue2) {
+
+      if( fieldValue1 <= fieldValue2) {
         formGroup.get(field2)?.setErrors({ notEqual: true}) ;
         return { notGreater: true };
       }
@@ -28,6 +29,7 @@ export class ValidatorService {
       const formGroup = control as FormGroup;
       const fieldValue1 = new Date(formGroup.get(field1)?.value);
       const fieldValue2 = new Date(formGroup.get(field2)?.value);
+      
       if( fieldValue1 <= fieldValue2) {
         formGroup.get(field2)?.setErrors({ notEqual: true}) ;
         return { notGreater: true };

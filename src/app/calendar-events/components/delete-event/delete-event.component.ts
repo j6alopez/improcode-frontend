@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Subject, Observable } from 'rxjs';
 import { Modal } from '../../../shared/modals/modal.interface';
@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './delete-event.component.html',
   styleUrl: './delete-event.component.scss'
 } )
-export class DeleteEventComponent implements Modal<void, boolean> {
+export class DeleteEventComponent implements Modal<void, boolean>, OnDestroy {
   @ViewChild( 'dialog' )
   dialog!: ElementRef<HTMLDialogElement>;
 
@@ -23,6 +23,7 @@ export class DeleteEventComponent implements Modal<void, boolean> {
   public openDialog(): void {
     this.dialog.nativeElement.showModal();
   }
+
   afterClosed(): Observable<boolean> {
     return this.dialogConfirmed.asObservable();
   }
