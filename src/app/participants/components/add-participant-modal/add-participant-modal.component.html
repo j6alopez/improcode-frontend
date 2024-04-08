@@ -4,28 +4,52 @@
   <form [formGroup]="addParticipant" (ngSubmit)="onConfirm()" autocomplete="off"
     class="d-flex flex-column flex-md-row flex-md-wrap justify-content-center justify-content-sm-space">
     <div class="mb-3 col-12 col-6-md">
-      <label for="fistname" class="form-label">Firstname</label>
-      <input type="text" formControlName='firstname' class="form-control" id="fistname" placeholder="Jordi">
+      <label for="firstname" class="form-label">Firstname</label>
+      <input type="text" formControlName='firstname' class="form-control" id="firstname" placeholder="Jordi">
+      @if ( isNotValidField('firstname') ) {
+        <div class="text-center text-sm-start">
+          <small class="text-danger mt-1">
+              Must be a valid name
+          </small>
+
+        </div>
+      }
     </div>
 
     <div class="mb-3 col-12 col-6-md">
       <label for="lastname" class="form-label">Lastname</label>
       <input type="text" formControlName='lastname' class="form-control" id="lastname" placeholder="López">
+      @if ( isNotValidField('lastname') ) {
+        <div class="text-center text-sm-start">
+          <small class="text-danger mt-1">
+              Must be a valid surname
+          </small>
+        </div>
+      }
     </div>
 
     <div class="mb-3 col-12 col-6-md">
       <label for="phone" class="form-label">Phone</label>
       <input type="tel" formControlName='phone' class="form-control" id="phone" placeholder="612612612">
+      @if ( isNotValidField('phone') ) {
+        <div class="text-center text-sm-start">
+          <small class="text-danger mt-1">
+              Must be a valid spanish phone number
+          </small>
+        </div>
+      }
     </div>
 
     <div class="mb-3 col-12 col-6-md">
       <label for="email" class="form-label">Email</label>
       <input type="email" formControlName='email' class="form-control" id="email" placeholder="jordi@gmail.com">
-    </div>
-
-    <div class="mb-3 col-12 col-6-md">
-      <label for="location" class="form-label">Location</label>
-      <input type="text" formControlName='location' class="form-control" id="location" placeholder="Barcelona">
+      @if ( isNotValidField('email') ) {
+        <div class="text-center text-sm-start">
+          <small class="text-danger mt-1">
+              Must be a valid email
+          </small>
+        </div>
+      }
     </div>
 
     <div class="mb-3 col-12">

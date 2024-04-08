@@ -7,7 +7,6 @@
         <th scope="col">Last</th>
         <th scope="col">Email</th>
         <th scope="col">Phone</th>
-        <th scope="col">Location</th>
         <th scope="col">Distance</th>
         <th scope="col">Actions</th>
       </tr>
@@ -20,7 +19,6 @@
         <td>{{ participant.lastname}}</td>
         <td>{{ participant.email}}</td>
         <td>{{ participant.phone}}</td>
-        <td>{{ participant.location}}</td>
         <td>{{ participant.distance}}</td>
         <td class="d-flex gap-2">
           <button class="btn btn-warning rounded-4" type="button" (click)="editClicked($index)">

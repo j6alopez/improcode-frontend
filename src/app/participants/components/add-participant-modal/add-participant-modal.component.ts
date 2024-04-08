@@ -13,7 +13,7 @@ import { Observable, Subject } from 'rxjs';
   templateUrl: './add-participant-modal.component.html',
   styleUrl: './add-participant-modal.component.scss'
 } )
-export class AddParticipantModalComponent implements Modal<any, Participant | undefined>, OnDestroy{
+export class AddParticipantModalComponent implements Modal<any, Participant | undefined>, OnDestroy {
 
   private validatorService = inject( ValidatorService );
 
@@ -29,27 +29,26 @@ export class AddParticipantModalComponent implements Modal<any, Participant | un
   }
 
   public addParticipant: FormGroup = new FormGroup( {
-    firstname: new FormControl( 'jose', [
-      Validators.required
-    ] ),
-    lastname: new FormControl('jose', [
-      Validators.required
+    firstname: new FormControl('', [
+      Validators.required, Validators.pattern(ValidatorService.onlyLettersPattern)
     ]),
-    phone: new FormControl( '123456789', [
+    lastname: new FormControl('', [
+      Validators.required, Validators.pattern(ValidatorService.onlyLettersPattern)
+    ]),
+    phone: new FormControl('', [
+      Validators.required, Validators.pattern(ValidatorService.spanishPhonePattern)
+    ]),
+    email: new FormControl('', [
+      Validators.required, Validators.pattern(ValidatorService.emailPattern)
+    ]),
+    distance: new FormControl(Distance.KM_37, [
       Validators.required
-    ] ),
-    email: new FormControl( 'a@gmail.com', [
-      Validators.required
-    ] ),
-    location: new FormControl( 'girona', [
-      Validators.required
-    ] ),
-    distance: new FormControl( Distance.KM_37, [
-      Validators.required
-    ] )
-  } )
+    ])
+  });
+
 
   openDialog(): void {
+    this.addParticipant.reset();
     this.dialog.nativeElement.showModal();
   }
 
@@ -74,11 +73,10 @@ export class AddParticipantModalComponent implements Modal<any, Participant | un
       return;
     }
     this.dialogConfirmed.next( this.addParticipant.value as Participant );
-    this.closeAndResetForm();
   }
 
-  isNotValidField(field: string) {
-    return this.validatorService.isNotValidField(this.addParticipant, field);
+  isNotValidField( field: string ) {
+    return this.validatorService.isNotValidField( this.addParticipant, field );
   }
 
   ngOnDestroy(): void {

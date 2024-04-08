@@ -10,8 +10,6 @@ export interface Participant {
 
   phone: string;
 
-  location: string;
-
   distance: string;
 
 }

@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
 import { Participant } from '../../interfaces/participant.interface';
 import { Observable, Subject } from 'rxjs';
 import { Modal } from '../../../shared/modals/modal.interface';
+import { ValidatorService } from '../../../shared/validators/validator.service';
 
 @Component( {
   selector: 'edit-participant-modal',
@@ -25,32 +26,22 @@ export class EditParticipantModalComponent implements Modal<Participant, Partici
 
   public editParticipant: FormGroup = new FormGroup( {
     firstname: new FormControl(
-      '',
       [
-        Validators.required
+        Validators.required, Validators.pattern(ValidatorService.onlyLettersPattern)
       ] ),
     lastname: new FormControl(
-      '',
       [
-        Validators.required
+        Validators.required, Validators.pattern(ValidatorService.onlyLettersPattern)
       ] ),
     phone: new FormControl(
-      '',
       [
-        Validators.required
-      ] ),
-    location: new FormControl(
-      '',
-      [
-        Validators.required
+        Validators.required, Validators.pattern(ValidatorService.emailPattern)
       ] ),
     distance: new FormControl(
-      '',
       [
         Validators.required
       ] )
   } )
-
 
   openDialog( participant: Participant ): void {
     this.participant = participant;
