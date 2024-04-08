@@ -46,7 +46,6 @@ export class AddParticipantModalComponent implements Modal<any, Participant | un
     ])
   });
 
-
   openDialog(): void {
     this.addParticipant.reset();
     this.dialog.nativeElement.showModal();

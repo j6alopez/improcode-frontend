@@ -12,6 +12,7 @@ import { DeleteEventComponent } from '../../../calendar-events/components/delete
 import { MapperCalendar } from '../../../calendar-events/mappers/MapperCalendar';
 import { CalendarEvent } from '../../../shared/events/calendar.event.interface';
 import { DateClickInfo } from '../../../third-party/full-calendar/date-click-info.interface';
+import listPlugin from '@fullcalendar/list'
 
 @Component( {
   selector: 'home-page',
@@ -45,11 +46,11 @@ export class HomePageComponent implements OnInit, AfterViewInit {
 
   public calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
-    plugins: [ dayGridPlugin, timeGridPlugin, bootstrap5Plugin, interactionPlugin ],
+    plugins: [ dayGridPlugin, timeGridPlugin, bootstrap5Plugin, interactionPlugin, listPlugin ],
     themeSystem: 'bootstrap5',
     headerToolbar: {
       start: 'title',
-      right: 'dayGridMonth,dayGridWeek,timeGridFiveDay,prev,next'
+      right: 'dayGridMonth,dayGridWeek,timeGridFiveDay,listWeek,prev,next'
     },
     locale: 'en',
     timeZone: 'GMT+1',
@@ -85,10 +86,11 @@ export class HomePageComponent implements OnInit, AfterViewInit {
   private handleAddEvent(): void {
     this.addEventDialogClosed = this.addEventDialog.afterClosed();
     this.addEventDialogClosed.pipe(
+      tap( event => console.log( event ) ),
       filter( event => event !== undefined ),
       concatMap( event => {
         return this.calendarEventService.createCalendarEvent( event! );
-      })
+      } )
     ).subscribe();
   }
 

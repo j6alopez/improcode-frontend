@@ -73,8 +73,8 @@ export class AddEventComponent implements Modal<any, CalendarEvent | undefined>,
       this.addEventForm.markAllAsTouched();
       return;
     }
-    this.closeAndResetForm();
     this.dialogConfirmed.next( this.addEventForm.value as CalendarEvent );
+    this.closeAndResetForm();
   }
 
   private closeAndResetForm() {
