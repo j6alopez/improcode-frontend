@@ -7,6 +7,7 @@ import { LocationMarker } from '../../interfaces/location-marker.interface'
 import { MapLocationService } from '../../services/map-location.service';
 import { MapLocation } from '../../interfaces/map-location.interface';
 import { environment } from '../../../../environments/environment';
+import { catchError, filter, of } from 'rxjs';
 
 @Component( {
   selector: 'places-page',
@@ -62,8 +63,8 @@ export class PlacesPageComponent implements OnInit, AfterViewInit {
     if ( !location ) return;
     const color = location.color;
     const lngLat: LngLat = new LngLat( location.lng, location.lat );
-
-    this.addMarker( lngLat, color );
+    const { _id } = location;
+    this.addMarker( lngLat, color, false, _id );
   }
 
   createMarker() {
@@ -71,48 +72,52 @@ export class PlacesPageComponent implements OnInit, AfterViewInit {
     const color = '#xxxxxx'.replace( /x/g, y => ( Math.random() * 16 | 0 ).toString( 16 ) );
     const lngLat = this.map.getCenter();
 
+    const markerOnList: LocationMarker | undefined = this.markers.find( ( { marker } ) => {
+      marker.getLngLat() === lngLat
+    } );
+    if ( markerOnList ) return;
+
     this.addMarker( lngLat, color, true );
   }
 
-  addMarker( lngLat: LngLat, color: string, persistMarker: boolean = false ) {
+  addMarker( lngLat: LngLat, color: string, persistMarker: boolean = false, id:string = "" ) {
+
     if ( !this.map ) return;
     const marker = new Marker( {
       color: color,
       draggable: true
     } )
-      .setLngLat( lngLat )
-      .addTo( this.map );
+      .setLngLat( lngLat );
 
     const location: MapLocation = {
       ...lngLat,
       color,
-      zoom: this.map.getZoom()
+      zoom: this.map.getZoom(),
     }
 
-    if ( persistMarker ) {
-      this.mapLocationService.createLocation( location )
-        .subscribe( ( location ) => {
-          this.markers.push( { location, marker } );
-        } );
+    if ( !persistMarker ) {
+      location._id = id;
+      this.markers.push( { location, marker } );
+      marker.on( 'dragend', () => {
+        this.handleMarkerDragEnd( marker, color );
+      } )
+      marker.addTo( this.map! );
+      return;
     }
+
+    this.mapLocationService.createLocation( location )
+      .pipe(
+        catchError( ( error: any ) => {
+          return of();
+        } ),
+        filter( ( location ) => !!location )
+      ).subscribe( ( location ) => {
+        this.markers.push( { location, marker } );
+        marker.addTo( this.map! );
+      } );
 
     marker.on( 'dragend', () => {
-      const markerOnList: LocationMarker | undefined = this.markers.find( element => element.marker === marker );
-      if ( !markerOnList ) {
-        return;
-      }
-
-      const { location: { _id }, marker: currentMarker } = markerOnList;
-      if ( !_id ) {
-        return;
-      }
-
-      const { lng, lat } = currentMarker.getLngLat();
-      const updateLocation: MapLocation = {
-        _id, zoom: this.map!.getZoom(), lng, lat, color
-      }
-
-      this.mapLocationService.updateLocation( updateLocation ).subscribe();
+      this.handleMarkerDragEnd( marker, color );
     } )
   }
 
@@ -133,6 +138,26 @@ export class PlacesPageComponent implements OnInit, AfterViewInit {
       center: marker.getLngLat(),
     } )
   }
+
+  private handleMarkerDragEnd( marker: Marker, color: string ): void {
+    const markerOnList: LocationMarker | undefined = this.markers.find( element => element.marker === marker );
+    if ( !markerOnList ) {
+      return;
+    }
+
+    const { location: { _id }, marker: currentMarker } = markerOnList;
+    if ( !_id ) {
+      return;
+    }
+
+    const { lng, lat } = currentMarker.getLngLat();
+    const updateLocation: MapLocation = {
+      _id, zoom: this.map!.getZoom(), lng, lat, color
+    }
+
+    this.mapLocationService.updateLocation( updateLocation ).subscribe();
+  }
+
 
   mapListeners() {
     if ( !this.map ) {
@@ -171,5 +196,7 @@ export class PlacesPageComponent implements OnInit, AfterViewInit {
   ngOnDestroy(): void {
     this.map?.remove();
   }
+
+
 
 }

@@ -67,6 +67,7 @@ export class AddParticipantModalComponent implements Modal<any, Participant | un
   }
 
   onConfirm() {
+    this.dialog.nativeElement.close();
     if ( this.addParticipant.invalid ) {
       this.addParticipant.markAllAsTouched();
       return;
