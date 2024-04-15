@@ -58,6 +58,13 @@
         <option value="37km" selected>37km</option>
         <option value="54km">54km</option>
       </select>
+      @if ( isNotValidField('distance') ) {
+        <div class="text-center text-sm-start">
+          <small class="text-danger mt-1">
+              Select an option
+          </small>
+        </div>
+      }
     </div>
     <div class="justify-content-lg-end">
       <button type="submit" class="btn btn-primary flex-grow-1 flex-md-grow-0 mx-3 my-1 px-md-5">

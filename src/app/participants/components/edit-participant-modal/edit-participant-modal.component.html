@@ -4,18 +4,39 @@
   <form [formGroup]="editParticipant" (ngSubmit)="onConfirm()" autocomplete="off"
     class="d-flex flex-column flex-md-row flex-md-wrap justify-content-center justify-content-sm-space">
     <div class="mb-3 col-12 col-6-md">
-      <label for="fistname" class="form-label">Firstname</label>
+      <label for="firstname" class="form-label">Firstname</label>
       <input type="text" formControlName='firstname' class="form-control" id="fistname" placeholder="Jordi">
+      @if ( isNotValidField('firstname') ) {
+        <div class="text-center text-sm-start">
+          <small class="text-danger mt-1">
+              Must be a valid name
+          </small>
+        </div>
+      }
     </div>
 
     <div class="mb-3 col-12 col-6-md">
       <label for="lastname" class="form-label">Lastname</label>
       <input type="text" formControlName='lastname' class="form-control" id="lastname" placeholder="López">
+      @if ( isNotValidField('lastname') ) {
+        <div class="text-center text-sm-start">
+          <small class="text-danger mt-1">
+              Must be a valid surname
+          </small>
+        </div>
+      }
     </div>
 
     <div class="mb-3 col-12 col-6-md">
       <label for="phone" class="form-label">Phone</label>
       <input type="tel" formControlName='phone' class="form-control" id="phone" placeholder="612612612">
+      @if ( isNotValidField('email') ) {
+        <div class="text-center text-sm-start">
+          <small class="text-danger mt-1">
+              Must be a valid email
+          </small>
+        </div>
+      }
     </div>
 
     <div class="mb-3 col-12">
@@ -24,12 +45,19 @@
         <option value="37km" selected>37km</option>
         <option value="54km">54km</option>
       </select>
+      @if ( isNotValidField('distance') ) {
+        <div class="text-center text-sm-start">
+          <small class="text-danger mt-1">
+              Select an option
+          </small>
+        </div>
+      }
     </div>
     <div class="justify-content-lg-end">
       <button type="submit" class="btn btn-primary flex-grow-1 flex-md-grow-0 mx-3 my-1 px-md-5">
         Confirm
       </button>
-      <button class="btn btn-danger flex-grow-1 flex-md-grow-0 mx-3 my-1 px-md-5" (click)="closeDialog()"> Cancel
+      <button class="btn btn-danger flex-grow-1 flex-md-grow-0 mx-3 my-1 px-md-5" (click)="onCancel()"> Cancel
       </button>
     </div>
   </form>
