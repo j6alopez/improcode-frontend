@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CalendarEvent } from '../../../shared/events/calendar.event.interface';
 import { Subject, Observable } from 'rxjs';
@@ -21,15 +21,15 @@ export class AddEventComponent implements Modal<any, CalendarEvent | undefined>,
   @ViewChild( 'dialog' )
   dialog!: ElementRef<HTMLDialogElement>;
 
-  constructor( private validatorService: ValidatorService ) { }
+  constructor( private validatorService: ValidatorService ) {}
 
   calendarEvent!: CalendarEvent;
 
   addEventForm: FormGroup = new FormGroup(
     {
       title: new FormControl( '', [ Validators.required ] ),
-      start_date: new FormControl( [ Validators.pattern(ValidatorService.datePattern) ] ),
-      end_date: new FormControl( '', [  Validators.pattern(ValidatorService.datePattern) ] )
+      start_date: new FormControl(null, [ Validators.required] ),
+      end_date: new FormControl(null, [ Validators.required] )
     },
     {
       validators: [
@@ -46,15 +46,21 @@ export class AddEventComponent implements Modal<any, CalendarEvent | undefined>,
     this.dialog.nativeElement.showModal();
   }
 
-  initializeForm( dateClickInfo: DateClickInfo ) {
-    const startEventDate: Date = new Date( dateClickInfo.date );
-    this.addEventForm.get( 'start_date' )?.setValue( startEventDate.toISOString().substring( 0, 16 ) );
-    const ADDITIONAL_HOURS: number = 1;
-    const endEventDate: Date = new Date( startEventDate.getTime() );
-    endEventDate.setHours( startEventDate.getHours() + ADDITIONAL_HOURS );
+  initializeForm(dateClickInfo: DateClickInfo) {
+    const startEventDate: Date = new Date(dateClickInfo.date);
+    const startDateISO: string = startEventDate.toISOString().substring(0, 16);
 
-    this.addEventForm.get( 'end_date' )?.setValue( endEventDate.toISOString().substring( 0, 16 ) );
+    const ADDITIONAL_HOURS: number = 1;
+    const endEventDate: Date = new Date(startEventDate.getTime() + ADDITIONAL_HOURS * 60 * 60 * 1000);
+    const endDateISO: string = endEventDate.toISOString().substring(0, 16);
+
+    this.addEventForm.patchValue({
+      start_date: startDateISO,
+      end_date: endDateISO
+    });
+
   }
+
 
   afterClosed(): Observable<CalendarEvent | undefined> {
     return this.dialogConfirmed.asObservable();
@@ -70,7 +76,6 @@ export class AddEventComponent implements Modal<any, CalendarEvent | undefined>,
       this.addEventForm.markAllAsTouched();
       return;
     }
-    console.log('fdsfsfdf')
     this.dialogConfirmed.next( this.addEventForm.value as CalendarEvent );
     this.closeAndResetForm();
   }
@@ -84,9 +89,14 @@ export class AddEventComponent implements Modal<any, CalendarEvent | undefined>,
     return this.addEventForm.getError( 'notGreater' );
   }
 
-  isNotValidField(field: string) {
-    return this.validatorService.isNotValidField(this.addEventForm, field);
+  isNotValidField( field: string ): boolean | null {
+    return this.validatorService.isNotValidField( this.addEventForm, field );
   }
+
+  isEmptyOrNull( field: string ): boolean | null {
+    return this.validatorService.isEmptyOrNull( this.addEventForm, field );
+  }
+
 
   ngOnDestroy(): void {
     this.dialogConfirmed.unsubscribe();

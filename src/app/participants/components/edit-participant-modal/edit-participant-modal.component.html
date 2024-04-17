@@ -30,10 +30,10 @@
     <div class="mb-3 col-12 col-6-md">
       <label for="phone" class="form-label">Phone</label>
       <input type="tel" formControlName='phone' class="form-control" id="phone" placeholder="612612612">
-      @if ( isNotValidField('email') ) {
+      @if ( isNotValidField('phone') ) {
         <div class="text-center text-sm-start">
           <small class="text-danger mt-1">
-              Must be a valid email
+              Must be a valid spanish phone number
           </small>
         </div>
       }

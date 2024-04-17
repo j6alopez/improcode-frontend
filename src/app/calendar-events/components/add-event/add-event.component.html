@@ -20,10 +20,10 @@
     <div class="mb-3 col-12 col-6-md">
       <label for="start_date" class="form-label">Start</label>
       <input type="datetime-local" formControlName='start_date' class="form-control" id="start_date">
-      @if ( isNotValidField('start_date') ) {
+      @if ( isNotValidField('start_date')) {
         <div class="text-center text-sm-start">
           <small class="text-danger mt-1">
-            Invalid date formatsss
+            Invalid date format
           </small>
         </div>
       }
@@ -32,6 +32,14 @@
     <div class="mb-3 col-12 col-6-md">
       <label for="end_date" class="form-label">End</label>
       <input type="datetime-local" formControlName='end_date' class="form-control" id="end_date">
+      @if ( isNotValidField('end_date')) {
+        <div class="text-center text-sm-start">
+          <small class="text-danger mt-1">
+            Invalid date format
+          </small>
+        </div>
+      }
+
       @if ( addEventForm.touched && addEventForm.hasError('notGreater') ) {
       <div>
         <p class="text-danger text-center mt-3">
@@ -50,10 +58,4 @@
       </button>
     </div>
   </form>
-  {{ addEventForm.value| json}}
-  error
-  {{ addEventForm.errors| json}}
-  invalid
-  {{ addEventForm.invalid| json}}
-
 </dialog>
