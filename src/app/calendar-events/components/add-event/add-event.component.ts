@@ -28,8 +28,8 @@ export class AddEventComponent implements Modal<any, CalendarEvent | undefined>,
   addEventForm: FormGroup = new FormGroup(
     {
       title: new FormControl( '', [ Validators.required ] ),
-      start_date: new FormControl( { disabled: true }, [ Validators.required ] ),
-      end_date: new FormControl( '', [ Validators.required ] )
+      start_date: new FormControl( [ Validators.pattern(ValidatorService.datePattern) ] ),
+      end_date: new FormControl( '', [  Validators.pattern(ValidatorService.datePattern) ] )
     },
     {
       validators: [
@@ -48,10 +48,7 @@ export class AddEventComponent implements Modal<any, CalendarEvent | undefined>,
 
   initializeForm( dateClickInfo: DateClickInfo ) {
     const startEventDate: Date = new Date( dateClickInfo.date );
-    console.log(startEventDate)
     this.addEventForm.get( 'start_date' )?.setValue( startEventDate.toISOString().substring( 0, 16 ) );
-
-
     const ADDITIONAL_HOURS: number = 1;
     const endEventDate: Date = new Date( startEventDate.getTime() );
     endEventDate.setHours( startEventDate.getHours() + ADDITIONAL_HOURS );
@@ -73,6 +70,7 @@ export class AddEventComponent implements Modal<any, CalendarEvent | undefined>,
       this.addEventForm.markAllAsTouched();
       return;
     }
+    console.log('fdsfsfdf')
     this.dialogConfirmed.next( this.addEventForm.value as CalendarEvent );
     this.closeAndResetForm();
   }

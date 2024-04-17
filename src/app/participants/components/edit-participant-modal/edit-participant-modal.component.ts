@@ -37,7 +37,7 @@ export class EditParticipantModalComponent implements Modal<Participant, Partici
       ] ),
     phone: new FormControl('',
       [
-        Validators.required, Validators.pattern(ValidatorService.emailPattern)
+        Validators.required, Validators.pattern(ValidatorService.spanishPhonePattern)
       ] ),
     distance: new FormControl('',
       [

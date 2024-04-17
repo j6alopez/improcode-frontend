@@ -20,6 +20,13 @@
     <div class="mb-3 col-12 col-6-md">
       <label for="start_date" class="form-label">Start</label>
       <input type="datetime-local" formControlName='start_date' class="form-control" id="start_date">
+      @if ( isNotValidField('start_date') ) {
+        <div class="text-center text-sm-start">
+          <small class="text-danger mt-1">
+            Invalid date formatsss
+          </small>
+        </div>
+      }
     </div>
 
     <div class="mb-3 col-12 col-6-md">
@@ -43,4 +50,10 @@
       </button>
     </div>
   </form>
+  {{ addEventForm.value| json}}
+  error
+  {{ addEventForm.errors| json}}
+  invalid
+  {{ addEventForm.invalid| json}}
+
 </dialog>
